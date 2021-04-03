@@ -1,27 +1,12 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Navigation from "../../src/Navigation";
+import Navigation from "../../src/components/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import utilStyles from "../../styles/utils.module.css";
 import productsService from "../../src/services/productsService";
 import vendorsService from "../../src/services/vendorsService";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Link from "next/link";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Button from "@material-ui/core/Button";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import Divider from "@material-ui/core/Divider";
+import ProductList from "../../src/components/ProductList";
 
 const drawerWidth = 260;
 
@@ -37,39 +22,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(1),
   },
-  iconBtn: {
-    padding: 0,
-    margin: 0,
-  },
-  avatar: {
-    padding: 0,
-    paddingRight: theme.spacing(1),
-    minWidth: 80,
-    minHeight: 80,
-  },
-  listitem: {
-    padding: 0,
-    margin: 0,
-  },
-  manageProduct: {
-    padding: 0,
-    margin: 0,
-    display: "flex",
-    alignItems: "left",
-  },
-  videoCardPaper: {
-    width: "100%",
-  },
-  cardHeader: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  priceText: {
-    fontWeight: "bold",
-    color: "#000",
-  },
-  listTitle: {
-    textTransform: "capitalize",
-  },
 }));
 
 export const getServerSideProps = async ({ params }) => {
@@ -77,7 +29,6 @@ export const getServerSideProps = async ({ params }) => {
   const vendor = await vendorsService.getVendors({
     filter: "recordid = '" + id + "'",
   });
-  console.log(vendor);
   const products = await productsService.getProducts({
     filter: "Vendorid = '" + id + "'",
   });
@@ -90,81 +41,20 @@ export const getServerSideProps = async ({ params }) => {
   };
 };
 
-export default function Index({ products, vendor }) {
+//Add basket data to navigation and make react based on state and also make navigation open when changes happen
+
+export default function Vendor({ products, vendor }) {
   const classes = useStyles();
+  const [basketList, setBasketList] = React.useState([]);
   return (
     <Container>
       {products.length > 0 && (
         <Box>
           <Box className={classes.root}>
-            <Navigation />
+            <Navigation basketList={products} title={vendor[0].fields.Name} />
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-              <div className={utilStyles.headingLgLight}>
-                {vendor[0].fields.Name}
-              </div>
-              <List>
-                {products.map((item, i) => (
-                  <>
-                    <ListItem key={i} className={classes.listitem}>
-                      <ListItemAvatar>
-                        <>
-                          {"image" in item.fields &&
-                          item.fields.image.length > 0 ? (
-                            <Avatar
-                              variant="square"
-                              className={classes.avatar}
-                              src={item.fields.image[0].url}
-                            />
-                          ) : vendor[0].fields.Logo.length > 0 ? (
-                            <Avatar
-                              variant="square"
-                              className={classes.avatar}
-                              src={vendor[0].fields.Logo[0].url}
-                            />
-                          ) : (
-                            <Avatar variant="square">{`${i + 1}`}</Avatar>
-                          )}
-                        </>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <React.Fragment>
-                            <div className={classes.listTitle}>
-                              {item.fields.Name}
-                            </div>
-                          </React.Fragment>
-                        }
-                        secondary={
-                          <React.Fragment>
-                            <div className={classes.priceText}>
-                              {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
-                            </div>
-                            <div
-                              component="form"
-                              className={classes.manageProduct}
-                            >
-                              <IconButton
-                                aria-label="add"
-                                className={classes.iconBtn}
-                              >
-                                <AddCircleIcon fontSize="large" />
-                              </IconButton>
-                              <IconButton
-                                aria-label="remove"
-                                className={classes.iconBtn}
-                              >
-                                <RemoveCircleIcon fontSize="large" />
-                              </IconButton>
-                            </div>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <Divider />
-                  </>
-                ))}
-              </List>
+              <ProductList products={products} />
             </main>
           </Box>
         </Box>

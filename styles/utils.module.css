@@ -3,7 +3,6 @@
 @import url("https://fonts.googleapis.com/css?family=Amiri|Reem+Kufi&display=swap");
 
 .heading2Xl {
-  font-family: "Amiri";
   font-size: 1.8rem;
   line-height: 1.4;
   font-weight: 800;
@@ -12,17 +11,15 @@
 }
 
 .headingXl {
-  font-family: "Amiri";
   font-size: 1.6rem;
   line-height: 1.2;
   font-weight: 800;
 }
 
 .headingLg {
-  font-family: "Tajawal";
   font-size: 1.4rem;
   line-height: 1.1;
-  color: "#7d313f";
+  color: black;
 }
 
 .headingLgLight {

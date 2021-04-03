@@ -6,33 +6,16 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MenuIcon from "@material-ui/icons/Menu";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import ProductList from "../components/ProductList";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import utilStyles from "../styles/utils.module.css";
+import utilStyles from "../../styles/utils.module.css";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
 import Logo from "./Logo";
-import Link from "next/link";
-import Avatar from "@material-ui/core/Avatar";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import { deepOrange, deepPurple } from "@material-ui/core/colors";
-import { primary } from "@material-ui/core/colors";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import MenuBookIcon from "@material-ui/icons/MenuBook";
-import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Box from "@material-ui/core/Box";
-import YouTubeIcon from "@material-ui/icons/YouTube";
+import HomeIcon from "@material-ui/icons/Home";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -51,9 +34,14 @@ const useStyles = makeStyles((theme) => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
+    marginLeft: 0,
+    paddingLeft: 0,
+    backgroundImage: `url("/images/organic-market-banner.jpg")`,
   },
   menuButton: {
-    marginLeft: theme.spacing(2),
+    padding: 0,
+    margin: 0,
+    paddingRight: theme.spacing(1),
     [theme.breakpoints.up("sm")]: {
       display: "none",
     },
@@ -107,12 +95,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Amiri",
     direction: "rtl",
   },
+  appBarTitle: {
+    fontSize: "1.4rem",
+    lineHeight: 1.1,
+    color: theme.palette.text.primary,
+    flexGrow: 1,
+  },
 }));
 
 function Navigation(props) {
-  const {
-    window,
-  } = props;
+  const { window, basketList, title } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -130,13 +122,19 @@ function Navigation(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-    <div>
-      <Logo />
+    <Box p={1}>
+      <Box display="flex" flexDirection="row">
+        <ShoppingBasketIcon />
+        <Box pl={1}>
+          <div className={utilStyles.headingLg}>Order Basket</div>
+        </Box>
+      </Box>
       <Divider />
-      <List>
-      </List>
-    </div>
+      <ProductList products={basketList} />
+    </Box>
   );
+
+  //Add basket component and list of products
 
   return (
     <div>
@@ -150,9 +148,14 @@ function Navigation(props) {
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
-            <MenuIcon />
+            <ShoppingBasketIcon />
           </IconButton>
-          <div className={utilStyles.headingXl}>Menu</div>
+          <div className={classes.appBarTitle}>{title}</div>
+          <Link href="/">
+            <IconButton color="inherit">
+              <HomeIcon />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>

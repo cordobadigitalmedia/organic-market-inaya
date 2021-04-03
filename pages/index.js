@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Navigation from "../src/Navigation";
+import Navigation from "../src/components/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import utilStyles from "../styles/utils.module.css";
@@ -54,45 +54,34 @@ export default function Index({ vendors }) {
       {vendors.length > 0 && (
         <Box>
           <Box className={classes.root}>
-            <Navigation />
+            <Navigation basketList={[]} title="Inaya Organic Market" />
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-              <Card className={classes.videoCardPaper}>
-                <CardHeader
-                  className={classes.cardHeader}
-                  title={
-                    <div className={utilStyles.headingLgLight}>
-                      Organic Produce Vendors
-                    </div>
-                  }
-                />
-                <CardContent>
-                  <List>
-                    {vendors.map((item, i) => (
-                      <ListItem button key={i}>
-                        <ListItemAvatar>
-                          {item.fields.Logo.length > 0 ? (
-                            <Avatar src={item.fields.Logo[0].url} />
-                          ) : (
-                            <Avatar>{`${i + 1}`}</Avatar>
-                          )}
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <React.Fragment>
-                              <Link href={`/vendor/${item.id}`}>
-                                <div className={utilStyles.buttonText}>
-                                  {item.fields.Name}
-                                </div>
-                              </Link>
-                            </React.Fragment>
-                          }
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
+
+              <List>
+                {vendors.map((item, i) => (
+                  <ListItem button key={i}>
+                    <ListItemAvatar>
+                      {item.fields.Logo.length > 0 ? (
+                        <Avatar src={item.fields.Logo[0].url} />
+                      ) : (
+                        <Avatar>{`${i + 1}`}</Avatar>
+                      )}
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Link href={`/vendor/${item.id}`}>
+                            <div className={utilStyles.buttonText}>
+                              {item.fields.Name}
+                            </div>
+                          </Link>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
             </main>
           </Box>
         </Box>
