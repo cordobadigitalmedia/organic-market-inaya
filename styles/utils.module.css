@@ -26,10 +26,8 @@
 }
 
 .headingLgLight {
-  font-family: "Tajawal";
   font-size: 1.4rem;
-  line-height: 1.1;
-  color: white;  
+  line-height: 1.1; 
 }
 
 .headingMd {

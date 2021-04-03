@@ -18,9 +18,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Link from "next/link";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Button from "@material-ui/core/Button";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import Divider from "@material-ui/core/Divider";
 
 const drawerWidth = 260;
 
@@ -36,11 +37,38 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(1),
   },
+  iconBtn: {
+    padding: 0,
+    margin: 0,
+  },
+  avatar: {
+    padding: 0,
+    paddingRight: theme.spacing(1),
+    minWidth: 80,
+    minHeight: 80,
+  },
+  listitem: {
+    padding: 0,
+    margin: 0,
+  },
+  manageProduct: {
+    padding: 0,
+    margin: 0,
+    display: "flex",
+    alignItems: "left",
+  },
   videoCardPaper: {
     width: "100%",
   },
   cardHeader: {
     backgroundColor: theme.palette.primary.main,
+  },
+  priceText: {
+    fontWeight: "bold",
+    color: "#000",
+  },
+  listTitle: {
+    textTransform: "capitalize",
   },
 }));
 
@@ -72,65 +100,71 @@ export default function Index({ products, vendor }) {
             <Navigation />
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-              <Card className={classes.videoCardPaper}>
-                <CardHeader
-                  className={classes.cardHeader}
-                  avatar={
-                    <Link href={`/`}>
-                      <IconButton
-                        aria-label="back"
-                        size="small"
-                        color="secondary"
-                      >
-                        <ArrowBackIcon />
-                      </IconButton>
-                    </Link>
-                  }
-                  title={
-                    <div className={utilStyles.headingLgLight}>
-                      {vendor[0].fields.Name}
-                    </div>
-                  }
-                />
-                <CardContent>
-                  <List>
-                    {products.map((item, i) => (
-                      <ListItem button key={i}>
-                        <ListItemAvatar>
-                          <div>
-                            {"image" in item.fields &&
-                            item.fields.image.length > 0 ? (
-                              <Avatar src={item.fields.image[0].url} />
-                            ) : vendor[0].fields.Logo.length > 0 ? (
-                              <Avatar src={vendor[0].fields.Logo[0].url} />
-                            ) : (
-                              <Avatar>{`${i + 1}`}</Avatar>
-                            )}
-                          </div>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <React.Fragment>
-                              <div className={utilStyles.buttonText}>
-                                {item.fields.Name}
-                              </div>
-                            </React.Fragment>
-                          }
-                          secondary={`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton edge="end" aria-label="add">
-                            <AddCircleOutlineIcon />
-                          </IconButton>
-                          <IconButton edge="end" aria-label="remove">
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>                          
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
+              <div className={utilStyles.headingLgLight}>
+                {vendor[0].fields.Name}
+              </div>
+              <List>
+                {products.map((item, i) => (
+                  <>
+                    <ListItem key={i} className={classes.listitem}>
+                      <ListItemAvatar>
+                        <>
+                          {"image" in item.fields &&
+                          item.fields.image.length > 0 ? (
+                            <Avatar
+                              variant="square"
+                              className={classes.avatar}
+                              src={item.fields.image[0].url}
+                            />
+                          ) : vendor[0].fields.Logo.length > 0 ? (
+                            <Avatar
+                              variant="square"
+                              className={classes.avatar}
+                              src={vendor[0].fields.Logo[0].url}
+                            />
+                          ) : (
+                            <Avatar variant="square">{`${i + 1}`}</Avatar>
+                          )}
+                        </>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <React.Fragment>
+                            <div className={classes.listTitle}>
+                              {item.fields.Name}
+                            </div>
+                          </React.Fragment>
+                        }
+                        secondary={
+                          <React.Fragment>
+                            <div className={classes.priceText}>
+                              {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
+                            </div>
+                            <div
+                              component="form"
+                              className={classes.manageProduct}
+                            >
+                              <IconButton
+                                aria-label="add"
+                                className={classes.iconBtn}
+                              >
+                                <AddCircleIcon fontSize="large" />
+                              </IconButton>
+                              <IconButton
+                                aria-label="remove"
+                                className={classes.iconBtn}
+                              >
+                                <RemoveCircleIcon fontSize="large" />
+                              </IconButton>
+                            </div>
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <Divider />
+                  </>
+                ))}
+              </List>
             </main>
           </Box>
         </Box>
