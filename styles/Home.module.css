@@ -73,11 +73,14 @@
 
 .grid {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
   max-width: 800px;
   margin-top: 3rem;
+  list-style: none;
+  padding: 0;
+  margin-left: 0;
 }
 
 .card {
@@ -110,8 +113,16 @@
   line-height: 1.5;
 }
 
+.cardItem {
+  max-width: 22em;
+}
+
 .logo {
-  height: 1em;
+  height: 8em;
+}
+
+.titleimage {
+  height: 9em;
 }
 
 @media (max-width: 600px) {

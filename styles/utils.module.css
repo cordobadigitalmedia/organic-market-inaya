@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css?family=Scheherazade&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Tajawal&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Amiri|Reem+Kufi&display=swap");
+
+.heading2Xl {
+  font-family: "Amiri";
+  font-size: 1.8rem;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+  margin: 1rem 0;
+}
+
+.headingXl {
+  font-family: "Amiri";
+  font-size: 1.6rem;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.headingLg {
+  font-family: "Tajawal";
+  font-size: 1.4rem;
+  line-height: 1.1;
+  color: "#7d313f";
+}
+
+.headingLgLight {
+  font-family: "Tajawal";
+  font-size: 1.4rem;
+  line-height: 1.1;
+  color: white;  
+}
+
+.headingMd {
+  font-family: "Tajawal";
+  font-size: 1.2rem;
+  line-height: 0.9;
+  color: "#7d313f";
+}
+
+.verse {
+  font-family: "Amiri";
+  font-size: 1.2rem;
+  line-height: 2;
+  color: "#000";
+}
+
+.borderCircle {
+  border-radius: 9999px;
+}
+
+.colorInherit {
+  color: inherit;
+}
+
+.padding1px {
+  padding-top: 1px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  margin: 0 0 1.25rem;
+}
+
+.buttonText {
+  font-family: "Tajawal";
+  font-size: 1.1rem;
+  text-decoration: none !important;
+}
+
+.aLink {
+  text-decoration: none !important;
+}
+
+.navText {
+  font-family: "Tajawal";
+  font-size: 1rem;
+  color: "#7d313f";
+}
+
+.navTitle {
+  font-family: "Tajawal";
+  font-size: 1.2rem;
+  color: "#7d313f";
+  padding-bottom: 0.3em;
+  padding-top: 0.5em;
+}
+
+.lightText {
+  color: #999;
+}

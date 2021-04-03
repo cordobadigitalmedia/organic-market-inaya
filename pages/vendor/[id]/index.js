@@ -1,10 +1,11 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Navigation from "../src/Navigation";
+import Navigation from "../../../src/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import utilStyles from "../styles/utils.module.css";
-import vendorsService from "../src/services/vendorsService";
+import utilStyles from "../../../styles/utils.module.css";
+import productsService from "../../../src/services/productsService";
+import vendorsService from "../../../src/services/vendorsService";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -38,20 +39,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export async function getStaticProps() {
+export async function getStaticPaths() {
   const vendors = await vendorsService.getVendors({});
+  const paths = vendors.map((vendor) => ({
+    params: { id: vendor.id.toString() },
+  }));
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }) {
+  const { id } = params;
+  const vendor = await vendorsService.getVendors({
+    filter: "recordid = '" + id + "'",
+  });
+  const products = await productsService.getProducts({
+    filter: "Vendorid = '" + id + "'",
+  });
   return {
     props: {
-      vendors,
+      products,
+      vendor,
+      id,
     },
   };
 }
 
-export default function Index({ vendors }) {
+export default function Index({ products, vendor }) {
+  console.log(vendor);
   const classes = useStyles();
   return (
     <Container>
-      {vendors.length > 0 && (
+      {products.length > 0 && (
         <Box>
           <Box className={classes.root}>
             <Navigation />
@@ -62,25 +80,30 @@ export default function Index({ vendors }) {
                   className={classes.cardHeader}
                   title={
                     <div className={utilStyles.headingLgLight}>
-                      Organic Produce Vendors
+                      {vendor[0].fields.Name}
                     </div>
                   }
                 />
                 <CardContent>
                   <List>
-                    {vendors.map((item, i) => (
+                    {products.map((item, i) => (
                       <ListItem button key={i}>
                         <ListItemAvatar>
-                          {item.fields.Logo.length > 0 ? (
-                            <Avatar src={item.fields.Logo[0].url} />
-                          ) : (
-                            <Avatar>{`${i + 1}`}</Avatar>
-                          )}
+                          <div>
+                            {"image" in item.fields &&
+                            item.fields.image.length > 0 ? (
+                              <Avatar src={item.fields.image[0].url} />
+                            ) : vendor[0].fields.Logo.length > 0 ? (
+                              <Avatar src={vendor[0].fields.Logo[0].url} />
+                            ) : (
+                              <Avatar>{`${i + 1}`}</Avatar>
+                            )}
+                          </div>
                         </ListItemAvatar>
                         <ListItemText
                           primary={
                             <React.Fragment>
-                              <Link href={`/vendor/${item.id}`}>
+                              <Link href={`/product/${item.id}`}>
                                 <div className={utilStyles.buttonText}>
                                   {item.fields.Name}
                                 </div>
