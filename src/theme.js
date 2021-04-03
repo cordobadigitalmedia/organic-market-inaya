@@ -9,7 +9,7 @@ const theme = createMuiTheme({
       main: '#394c6e',
     },
     secondary: {
-      main: '#19857b',
+      main: '#ffffff',
       dark: '#2e2e2e',
     },
     error: {

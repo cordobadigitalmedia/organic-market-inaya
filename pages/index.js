@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
   videoCardPaper: {
     width: "100%",
@@ -48,7 +48,6 @@ export async function getServerSideProps() {
 }
 
 export default function Index({ vendors }) {
-  console.log(vendors);
   const classes = useStyles();
   return (
     <Container>
