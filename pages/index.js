@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const vendors = await vendorsService.getVendors({});
   return {
     props: {
@@ -48,6 +48,7 @@ export async function getStaticProps() {
 }
 
 export default function Index({ vendors }) {
+  console.log(vendors);
   const classes = useStyles();
   return (
     <Container>
