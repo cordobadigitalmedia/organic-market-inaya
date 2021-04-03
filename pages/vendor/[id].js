@@ -1,11 +1,11 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Navigation from "../../../src/Navigation";
+import Navigation from "../../src/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import utilStyles from "../../../styles/utils.module.css";
-import productsService from "../../../src/services/productsService";
-import vendorsService from "../../../src/services/vendorsService";
+import utilStyles from "../../styles/utils.module.css";
+import productsService from "../../src/services/productsService";
+import vendorsService from "../../src/services/vendorsService";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -39,19 +39,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
 export async function getStaticPaths() {
-  const vendors = await vendorsService.getVendors({});
-  const paths = vendors.map((vendor) => ({
-    params: { id: vendor.id.toString() },
-  }));
-  return { paths, fallback: false };
+  return {
+    paths: [
+      { params: { id: 'recVvqzqsYgyEGAzM' } },
+      { params: { id: 'recZL5KJlGOhbnySl' } }
+    ],
+    fallback: true
+  }
 }
+ */
 
-export async function getStaticProps({ params }) {
+
+export const getServerSideProps = async ({ params }) => {
   const { id } = params;
   const vendor = await vendorsService.getVendors({
     filter: "recordid = '" + id + "'",
   });
+  console.log(vendor);
   const products = await productsService.getProducts({
     filter: "Vendorid = '" + id + "'",
   });
@@ -65,7 +71,6 @@ export async function getStaticProps({ params }) {
 }
 
 export default function Index({ products, vendor }) {
-  console.log(vendor);
   const classes = useStyles();
   return (
     <Container>

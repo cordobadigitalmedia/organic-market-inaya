@@ -13,7 +13,7 @@ module.exports = (phase, { defaultConfig }) => {
   return {
     /* config options for all phases except development here */
     env: {
-      rooturl: "https://tafsir.institute",
+      rooturl: "https://organic-market-inaya.vercel.app",
     },
   };
 };

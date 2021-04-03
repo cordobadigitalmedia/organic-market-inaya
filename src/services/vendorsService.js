@@ -9,6 +9,7 @@ const getVendors = async (params) => {
     query.filterByFormula = params.filter;
   }  
   try {
+    console.log(process.env.rooturl);
     const vendors = await axios.post(
       process.env.rooturl + "/api/airtable/getrecords",
       {
