@@ -46,15 +46,21 @@ export const getServerSideProps = async ({ params }) => {
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
   const [basketList, setBasketList] = React.useState([]);
+  const addItemToBasket = (params) => {
+    let currentBasket = basketList;
+    currentBasket.push(params.item);
+    setBasketList(currentBasket);
+    console.log(currentBasket);
+  }
   return (
     <Container>
       {products.length > 0 && (
         <Box>
           <Box className={classes.root}>
-            <Navigation basketList={products} title={vendor[0].fields.Name} />
+            <Navigation basketList={basketList} title={vendor[0].fields.Name}/>
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-              <ProductList products={products} />
+              <ProductList products={products} onAddItem={addItemToBasket} mode="list"/>
             </main>
           </Box>
         </Box>

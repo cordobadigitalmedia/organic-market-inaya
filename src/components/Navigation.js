@@ -121,6 +121,14 @@ function Navigation(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const addItemToBasket = (item) => {
+    console.log(item);
+  };
+
+  React.useEffect(() => {
+    // Update the document title using the browser API
+  });
+
   const drawer = (
     <Box p={1}>
       <Box display="flex" flexDirection="row">
@@ -130,7 +138,11 @@ function Navigation(props) {
         </Box>
       </Box>
       <Divider />
-      <ProductList products={basketList} />
+      <ProductList
+        products={basketList}
+        mode="basket"
+        onAddItem={addItemToBasket}
+      />
     </Box>
   );
 

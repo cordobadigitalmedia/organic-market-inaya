@@ -43,7 +43,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductList(props) {
   const classes = useStyles();
-  const { products } = props;
+  const { products, mode, onAddItem } = props;
+  const addItem = (item) => {
+    onAddItem({ mode: mode, item: item });
+  };
   return (
     <List>
       {products.map((item, i) => (
@@ -57,7 +60,7 @@ export default function ProductList(props) {
                     className={classes.avatar}
                     src={item.fields.image[0].url}
                   />
-                ) :  (
+                ) : (
                   <Avatar variant="square">{`${i + 1}`}</Avatar>
                 )}
               </>
@@ -74,7 +77,11 @@ export default function ProductList(props) {
                     {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
                   </div>
                   <div component="form" className={classes.manageProduct}>
-                    <IconButton aria-label="add" className={classes.iconBtn}>
+                    <IconButton
+                      aria-label="add"
+                      className={classes.iconBtn}
+                      onClick={() => addItem(item)}
+                    >
                       <AddCircleIcon fontSize="large" />
                     </IconButton>
                     <IconButton aria-label="remove" className={classes.iconBtn}>
