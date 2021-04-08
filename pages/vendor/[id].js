@@ -1,5 +1,5 @@
-import React from "react";
-import Container from "@material-ui/core/Container";
+import React, { useState, useEffect } from "react";
+import { Container, Button } from "@material-ui/core";
 import Navigation from "../../src/components/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -45,22 +45,70 @@ export const getServerSideProps = async ({ params }) => {
 
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
-  const [basketList, setBasketList] = React.useState([]);
+  const [basketList, setBasketList] = useState([]);
+  const [myProducts, setmyProducts] = useState([]);
+  const [count, setCount] = useState(0);
+
   const addItemToBasket = (params) => {
     let currentBasket = basketList;
-    currentBasket.push(params.item);
+    const matchIndex = currentBasket.findIndex(
+      (item) => item.id === params.item.id
+    );
+    console.log(matchIndex, currentBasket);
+    if (matchIndex > -1) {
+      currentBasket[matchIndex].count += 1;
+    } else {
+      currentBasket.push(params.item);
+    }
     setBasketList(currentBasket);
-    console.log(currentBasket);
-  }
+    setCount(count + 1);
+  };
+  const removeItemToBasket = (params) => {
+    let currentBasket = basketList;
+    const matchIndex = currentBasket.findIndex(
+      (item) => item.id === params.item.id
+    );
+    if (matchIndex > -1) {
+      if (currentBasket[matchIndex].count === 1) {
+        currentBasket.splice(matchIndex,1);
+      } else {
+        currentBasket[matchIndex].count -= 1;
+      }
+      setBasketList(currentBasket);
+    } 
+    setCount(count + 1);
+  };
+
+  useEffect(() => {
+    if (products.length > 0) {
+      const productsWithCount = products.map((product) => {
+        let updatedProd = product;
+        updatedProd.count = 1;
+        return updatedProd;
+      });
+      setmyProducts(productsWithCount);
+    }
+  }, [products]);
+
   return (
     <Container>
-      {products.length > 0 && (
+      {myProducts.length > 0 && (
         <Box>
           <Box className={classes.root}>
-            <Navigation basketList={basketList} title={vendor[0].fields.Name}/>
+            {basketList !== null && (
+              <Navigation
+                basketList={basketList}
+                title={vendor[0].fields.Name}
+              />
+            )}
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-              <ProductList products={products} onAddItem={addItemToBasket} mode="list"/>
+              <ProductList
+                products={myProducts}
+                onAddItem={addItemToBasket}
+                onRemoveItem={removeItemToBasket}
+                mode="list"
+              />
             </main>
           </Box>
         </Box>

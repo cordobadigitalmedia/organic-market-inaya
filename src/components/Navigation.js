@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -107,7 +107,9 @@ function Navigation(props) {
   const { window, basketList, title } = props;
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [count, setCount] = useState(0);
+  const [myList, setmyList] = useState([]);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -121,13 +123,41 @@ function Navigation(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  const addItemToBasket = (item) => {
-    console.log(item);
+  const addItemToBasket = (params) => {
+    let currentBasket = myList;
+    const matchIndex = currentBasket.findIndex(
+      (item) => item.id === params.item.id
+    );
+    console.log(matchIndex, currentBasket);
+    if (matchIndex > -1) {
+      currentBasket[matchIndex].count += 1;
+    } else {
+      currentBasket.push(params.item);
+    }
+    setmyList(currentBasket);
+    setCount(count + 1);
+  };
+  const removeItemToBasket = (params) => {
+    let currentBasket = myList;
+    const matchIndex = currentBasket.findIndex(
+      (item) => item.id === params.item.id
+    );
+    if (matchIndex > -1) {
+      if (currentBasket[matchIndex].count === 1) {
+        currentBasket.splice(matchIndex,1);
+      } else {
+        currentBasket[matchIndex].count -= 1;
+      }
+      setmyList(currentBasket);
+    } 
+    setCount(count + 1);
   };
 
-  React.useEffect(() => {
-    // Update the document title using the browser API
-  });
+  useEffect(() => {
+    if (basketList.length > 0) {
+      setmyList(basketList);
+    }
+  }, [count]);
 
   const drawer = (
     <Box p={1}>
@@ -139,9 +169,10 @@ function Navigation(props) {
       </Box>
       <Divider />
       <ProductList
-        products={basketList}
+        products={myList}
         mode="basket"
         onAddItem={addItemToBasket}
+        onRemoveItem={removeItemToBasket}
       />
     </Box>
   );

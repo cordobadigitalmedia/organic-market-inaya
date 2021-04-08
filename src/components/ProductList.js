@@ -1,15 +1,16 @@
-import React from "react";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import Divider from "@material-ui/core/Divider";
+import React, { useState, useEffect } from "react";
+import {
+  ListItemAvatar,
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Divider,
+  Box,
+} from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+import { AddCircle, RemoveCircle } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   iconBtn: {
@@ -43,10 +44,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductList(props) {
   const classes = useStyles();
-  const { products, mode, onAddItem } = props;
+  const { products, mode, onAddItem, onRemoveItem } = props;
+
   const addItem = (item) => {
     onAddItem({ mode: mode, item: item });
   };
+  const removeItem = (item) => {
+    onRemoveItem({ mode: mode, item: item });
+  };
+
   return (
     <List>
       {products.map((item, i) => (
@@ -73,21 +79,48 @@ export default function ProductList(props) {
               }
               secondary={
                 <React.Fragment>
+                  {mode === "basket" && (
+                    <div component="form" className={classes.manageProduct}>
+                      <IconButton
+                        aria-label="add"
+                        className={classes.iconBtn}
+                        onClick={() => addItem(item)}
+                      >
+                        <AddCircle fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="remove"
+                        className={classes.iconBtn}
+                        onClick={() => removeItem(item)}
+                      >
+                        <RemoveCircle fontSize="small" />
+                      </IconButton>
+                      <Box pl={1}>{`Qty: ${item.count}`}</Box>
+                    </div>
+                  )}
                   <div className={classes.priceText}>
-                    {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
+                    {mode === "list"
+                      ? `Price/Kg: ${item.fields["Price / Kg"]} JOD`
+                      : `Amount: ${item.fields["Price / Kg"] * item.count} JOD`}
                   </div>
-                  <div component="form" className={classes.manageProduct}>
-                    <IconButton
-                      aria-label="add"
-                      className={classes.iconBtn}
-                      onClick={() => addItem(item)}
-                    >
-                      <AddCircleIcon fontSize="large" />
-                    </IconButton>
-                    <IconButton aria-label="remove" className={classes.iconBtn}>
-                      <RemoveCircleIcon fontSize="large" />
-                    </IconButton>
-                  </div>
+                  {mode === "list" && (
+                    <div component="form" className={classes.manageProduct}>
+                      <IconButton
+                        aria-label="add"
+                        className={classes.iconBtn}
+                        onClick={() => addItem(item)}
+                      >
+                        <AddCircle fontSize="large" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="remove"
+                        className={classes.iconBtn}
+                        onClick={() => removeItem(item)}
+                      >
+                        <RemoveCircle fontSize="large" />
+                      </IconButton>
+                    </div>
+                  )}
                 </React.Fragment>
               }
             />
@@ -95,6 +128,7 @@ export default function ProductList(props) {
           <Divider />
         </>
       ))}
+      {mode === "basket" && <Box>{`Total: 100 JOD`}</Box>}
     </List>
   );
 }
