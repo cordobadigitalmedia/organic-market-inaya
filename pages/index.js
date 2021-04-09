@@ -1,19 +1,19 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
 import Navigation from "../src/components/Navigation";
-import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import utilStyles from "../styles/utils.module.css";
 import vendorsService from "../src/services/vendorsService";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  Card,
+  Grid,
+  CardContent,
+  Box,
+  Container,
+  CardMedia,
+  Typography,
+  CardActions,
+  Button,
+} from "@material-ui/core";
 import Link from "next/link";
 
 const drawerWidth = 260;
@@ -36,6 +36,35 @@ const useStyles = makeStyles((theme) => ({
   cardHeader: {
     backgroundColor: theme.palette.primary.main,
   },
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  cardMedia: {
+    paddingTop: "56.25%", // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
 }));
 
 export async function getServerSideProps() {
@@ -57,31 +86,37 @@ export default function Index({ vendors }) {
             <Navigation basketList={[]} title="Inaya Organic Market" />
             <main className={classes.content}>
               <Box className={classes.toolbar} />
-
-              <List>
+              <Grid container spacing={4}>
                 {vendors.map((item, i) => (
-                  <ListItem button key={i}>
-                    <ListItemAvatar>
-                      {item.fields.Logo.length > 0 ? (
-                        <Avatar src={item.fields.Logo[0].url} />
-                      ) : (
-                        <Avatar>{`${i + 1}`}</Avatar>
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <React.Fragment>
-                          <Link href={`/vendor/${item.id}`}>
-                            <div className={utilStyles.buttonText}>
-                              {item.fields.Name}
-                            </div>
-                          </Link>
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
+                  <Grid item key={item} xs={12} sm={6} md={4}>
+                    <Card className={classes.card}>
+                      <Link href={`/vendor/${item.id}`}>
+                        <a>
+                          <CardMedia
+                            className={classes.cardMedia}
+                            image={
+                              item.fields.Logo.length > 0
+                                ? item.fields.Logo[0].url
+                                : "https://source.unsplash.com/random"
+                            }
+                            title={item.fields.Name}
+                          />
+                        </a>
+                      </Link>
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {item.fields.Name}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Link href={`/vendor/${item.id}`}>
+                          <Button color="primary">View Items</Button>
+                        </Link>
+                      </CardActions>
+                    </Card>
+                  </Grid>
                 ))}
-              </List>
+              </Grid>
             </main>
           </Box>
         </Box>

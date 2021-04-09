@@ -43,7 +43,6 @@ export const getServerSideProps = async ({ params }) => {
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
   const [basketList, setBasketList] = useState([]);
-  const [count, setCount] = useState(0);
 
   return (
     <Container>

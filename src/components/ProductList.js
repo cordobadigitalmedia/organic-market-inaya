@@ -18,7 +18,7 @@ import {
   Box,
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import { AddCircle, RemoveCircle, Storefront } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   iconBtn: {
@@ -54,6 +54,14 @@ function ProductList(props) {
   const classes = useStyles();
   const { products, mode } = props;
 
+  const addItem = (item) => {
+    props.add(item);
+  }
+
+  const removeItem = (item) => {
+    props.remove(item);
+  }
+
   return (
     <List>
       {products.map((item, i) => (
@@ -68,7 +76,7 @@ function ProductList(props) {
                     src={item.fields.image[0].url}
                   />
                 ) : (
-                  <Avatar variant="square">{`${i + 1}`}</Avatar>
+                  <Avatar variant="square"><Storefront /></Avatar>
                 )}
               </>
             </ListItemAvatar>
@@ -109,14 +117,14 @@ function ProductList(props) {
                       <IconButton
                         aria-label="add"
                         className={classes.iconBtn}
-                        onClick={() => props.add(item)}
+                        onClick={() => addItem(item)}
                       >
                         <AddCircle fontSize="large" />
                       </IconButton>
                       <IconButton
                         aria-label="remove"
                         className={classes.iconBtn}
-                        onClick={() => props.remove(item)}
+                        onClick={() => removeItem(item)}
                       >
                         <RemoveCircle fontSize="large" />
                       </IconButton>

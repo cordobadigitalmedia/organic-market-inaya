@@ -6,8 +6,13 @@ const dataSlice = createSlice({
     items: [],
     totalItems: 0,
     totalAmount: 0,
+    showCart: false,
   },
   reducers: {
+    show(state, action) {
+      state.showCart = !action.payload;
+      return state;
+    },
     add(state, action) {
       let found = false;
       state.items.map((item) => {
@@ -26,6 +31,7 @@ const dataSlice = createSlice({
       }
       state.totalAmount += action.payload.fields["Price / Kg"];
       state.totalItems++;
+      state.showCart = true;
       return state;
     },
     remove(state, action) {
@@ -49,9 +55,10 @@ const dataSlice = createSlice({
           state.totalAmount -= action.payload.fields["Price / Kg"];
         }
       }
+      state.showCart = true;
       return state;
     },
   },
 });
-export const { add, remove } = dataSlice.actions;
+export const { show, add, remove } = dataSlice.actions;
 export default dataSlice.reducer;

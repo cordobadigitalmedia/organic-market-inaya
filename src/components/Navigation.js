@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { show } from "../store/cart.store";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -37,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     },
     marginLeft: 0,
     paddingLeft: 0,
-    backgroundImage: `url("/images/organic-market-banner.jpg")`,
   },
   menuButton: {
     padding: 0,
@@ -99,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   appBarTitle: {
     fontSize: "1.4rem",
     lineHeight: 1.1,
-    color: theme.palette.text.primary,
+    color: "#FFFFFF",
     flexGrow: 1,
   },
 }));
@@ -108,58 +109,14 @@ function Navigation(props) {
   const { window, basketList, title } = props;
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [count, setCount] = useState(0);
-  const [myList, setmyList] = useState([]);
+
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
+    props.show(props.cartItems.showCart);
   };
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  const addItemToBasket = (params) => {
-    let currentBasket = myList;
-    const matchIndex = currentBasket.findIndex(
-      (item) => item.id === params.item.id
-    );
-    if (matchIndex > -1) {
-      currentBasket[matchIndex].count += 1;
-    } else {
-      currentBasket.push(params.item);
-    }
-    setmyList(currentBasket);
-    setCount(count + 1);
-  };
-  const removeItemToBasket = (params) => {
-    let currentBasket = myList;
-    const matchIndex = currentBasket.findIndex(
-      (item) => item.id === params.item.id
-    );
-    if (matchIndex > -1) {
-      if (currentBasket[matchIndex].count === 1) {
-        currentBasket.splice(matchIndex,1);
-      } else {
-        currentBasket[matchIndex].count -= 1;
-      }
-      setmyList(currentBasket);
-    } 
-    setCount(count + 1);
-  };
-/** 
-  useEffect((count) => {
-    console.log(basketList);
-    if (basketList.length > 0) {
-      setmyList(basketList);
-    }
-  }, [count]);
-*/
   const drawer = (
     <Box p={1}>
       <Box display="flex" flexDirection="row">
@@ -169,11 +126,9 @@ function Navigation(props) {
         </Box>
       </Box>
       <Divider />
-      <Cart/>
+      <Cart />
     </Box>
   );
-
-  //Add basket component and list of products
 
   return (
     <div>
@@ -204,7 +159,7 @@ function Navigation(props) {
             container={container}
             variant="temporary"
             anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={mobileOpen}
+            open={props.cartItems.showCart}
             onClose={handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
@@ -236,4 +191,13 @@ Navigation.propTypes = {
   window: PropTypes.func,
 };
 
-export default Navigation;
+const mapStateToProps = (state) => ({
+  dataProps: state.data,
+  cartItems: state.cart,
+});
+
+const mapDispatchToProps = {
+  show,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
