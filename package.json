@@ -28,6 +28,7 @@
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "latest",
     "react-iframe": "^1.8.0",
     "react-redux": "^7.2.3",

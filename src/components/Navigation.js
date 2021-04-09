@@ -8,6 +8,7 @@ import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import ProductList from "../components/ProductList";
+import Cart from "../components/Cart";
 import Toolbar from "@material-ui/core/Toolbar";
 import utilStyles from "../../styles/utils.module.css";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
@@ -168,12 +169,7 @@ function Navigation(props) {
         </Box>
       </Box>
       <Divider />
-      <ProductList
-        products={myList}
-        mode="basket"
-        onAddItem={addItemToBasket}
-        onRemoveItem={removeItemToBasket}
-      />
+      <Cart/>
     </Box>
   );
 

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { Provider } from "react-redux";
-import { store } from "../src/store/store";
+import store from "../src/store/index";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";

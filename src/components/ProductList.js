@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
+import {
+  get,
+  changeActiveCategory,
+  changeActiveProduct,
+  fetchData,
+} from '../store/data.store';
+import { add, remove } from '../store/cart.store';
 import {
   ListItemAvatar,
   Avatar,
@@ -42,22 +50,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProductList(props) {
+function ProductList(props) {
   const classes = useStyles();
-  const { products, mode, onAddItem, onRemoveItem } = props;
-
-  const addItem = (item) => {
-    onAddItem({ mode: mode, item: item });
-  };
-  const removeItem = (item) => {
-    onRemoveItem({ mode: mode, item: item });
-  };
+  const { products, mode } = props;
 
   return (
     <List>
       {products.map((item, i) => (
-        <>
-          <ListItem key={i} className={classes.listitem}>
+        <div key={i}>
+          <ListItem className={classes.listitem}>
             <ListItemAvatar>
               <>
                 {"image" in item.fields && item.fields.image.length > 0 ? (
@@ -84,14 +85,14 @@ export default function ProductList(props) {
                       <IconButton
                         aria-label="add"
                         className={classes.iconBtn}
-                        onClick={() => addItem(item)}
+                        onClick={() => props.add(item)}
                       >
                         <AddCircle fontSize="small" />
                       </IconButton>
                       <IconButton
                         aria-label="remove"
                         className={classes.iconBtn}
-                        onClick={() => removeItem(item)}
+                        onClick={() => props.remove(item)}
                       >
                         <RemoveCircle fontSize="small" />
                       </IconButton>
@@ -108,14 +109,14 @@ export default function ProductList(props) {
                       <IconButton
                         aria-label="add"
                         className={classes.iconBtn}
-                        onClick={() => addItem(item)}
+                        onClick={() => props.add(item)}
                       >
                         <AddCircle fontSize="large" />
                       </IconButton>
                       <IconButton
                         aria-label="remove"
                         className={classes.iconBtn}
-                        onClick={() => removeItem(item)}
+                        onClick={() => props.remove(item)}
                       >
                         <RemoveCircle fontSize="large" />
                       </IconButton>
@@ -126,9 +127,26 @@ export default function ProductList(props) {
             />
           </ListItem>
           <Divider />
-        </>
+        </div>
       ))}
       {mode === "basket" && <Box>{`Total: 100 JOD`}</Box>}
     </List>
   );
 }
+
+const mapStateToProps = (state) => ({
+  dataProps: state.data,
+  cartItems: state.cart,
+});
+
+const mapDispatchToProps = {
+  get,
+  changeActiveCategory,
+  changeActiveProduct,
+  fetchData,
+  remove,
+  add,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+

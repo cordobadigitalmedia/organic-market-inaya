@@ -77,7 +77,7 @@ export default function Vendor({ products, vendor }) {
     } 
     setCount(count + 1);
   };
-
+  /** 
   useEffect((count) => {
     if (products.length > 0) {
       const productsWithCount = products.map((product) => {
@@ -88,10 +88,10 @@ export default function Vendor({ products, vendor }) {
       setmyProducts(productsWithCount);
     }
   },[count]);
-
+*/
   return (
     <Container>
-      {myProducts.length > 0 && (
+      {products.length > 0 && (
         <Box>
           <Box className={classes.root}>
             {basketList !== null && (
@@ -103,9 +103,7 @@ export default function Vendor({ products, vendor }) {
             <main className={classes.content}>
               <Box className={classes.toolbar} />
               <ProductList
-                products={myProducts}
-                onAddItem={addItemToBasket}
-                onRemoveItem={removeItemToBasket}
+                products={products}
                 mode="list"
               />
             </main>
