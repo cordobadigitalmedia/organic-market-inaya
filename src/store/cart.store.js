@@ -5,11 +5,11 @@ const dataSlice = createSlice({
   initialState: {
     items: [],
     totalItems: 0,
+    totalAmount: 0,
   },
   reducers: {
     add(state, action) {
       let found = false;
-      console.log(action.payload);
       state.items.map((item) => {
         if (item.id === action.payload.id) {
           item.count++;
@@ -24,6 +24,7 @@ const dataSlice = createSlice({
           product: action.payload,
         });
       }
+      state.totalAmount += action.payload.fields["Price / Kg"];
       state.totalItems++;
       return state;
     },
@@ -43,6 +44,9 @@ const dataSlice = createSlice({
       if (found) {
         if (state.totalItems > 0) {
           state.totalItems--;
+        }
+        if (state.totalAmount > 0) {
+          state.totalAmount -= action.payload.fields["Price / Kg"];
         }
       }
       return state;

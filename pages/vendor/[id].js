@@ -3,7 +3,6 @@ import { Container, Button } from "@material-ui/core";
 import Navigation from "../../src/components/Navigation";
 import Box from "@material-ui/core/Box";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import utilStyles from "../../styles/utils.module.css";
 import productsService from "../../src/services/productsService";
 import vendorsService from "../../src/services/vendorsService";
 import ProductList from "../../src/components/ProductList";
@@ -41,54 +40,11 @@ export const getServerSideProps = async ({ params }) => {
   };
 };
 
-//Add basket data to navigation and make react based on state and also make navigation open when changes happen
-
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
   const [basketList, setBasketList] = useState([]);
-  const [myProducts, setmyProducts] = useState([]);
   const [count, setCount] = useState(0);
 
-  const addItemToBasket = (params) => {
-    let currentBasket = basketList;
-    const matchIndex = currentBasket.findIndex(
-      (item) => item.id === params.item.id
-    );
-    if (matchIndex > -1) {
-      currentBasket[matchIndex].count += 1;
-    } else {
-      currentBasket.push(params.item);
-    }
-    setBasketList(currentBasket);
-    setCount(count + 1);
-  };
-  const removeItemToBasket = (params) => {
-    let currentBasket = basketList;
-    const matchIndex = currentBasket.findIndex(
-      (item) => item.id === params.item.id
-    );
-    if (matchIndex > -1) {
-      if (currentBasket[matchIndex].count === 1) {
-        currentBasket.splice(matchIndex,1);
-      } else {
-        currentBasket[matchIndex].count -= 1;
-      }
-      setBasketList(currentBasket);
-    } 
-    setCount(count + 1);
-  };
-  /** 
-  useEffect((count) => {
-    if (products.length > 0) {
-      const productsWithCount = products.map((product) => {
-        let updatedProd = product;
-        updatedProd.count = 1;
-        return updatedProd;
-      });
-      setmyProducts(productsWithCount);
-    }
-  },[count]);
-*/
   return (
     <Container>
       {products.length > 0 && (

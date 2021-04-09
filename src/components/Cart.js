@@ -7,12 +7,15 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
   IconButton,
   Divider,
   Box,
+  Button
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import { AddCircle, RemoveCircle, MonetizationOn } from "@material-ui/icons";
+import OrderDialog from "../components/OrderDialog";
 
 const useStyles = makeStyles((theme) => ({
   iconBtn: {
@@ -46,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Cart(props) {
   const classes = useStyles();
-  console.log(props.cartItems.items);
   return (
     <List>
       {props.cartItems.items.map((item, i) => (
@@ -54,7 +56,8 @@ function Cart(props) {
           <ListItem className={classes.listitem}>
             <ListItemAvatar>
               <>
-                {"image" in item.product.fields && item.product.fields.image.length > 0 ? (
+                {"image" in item.product.fields &&
+                item.product.fields.image.length > 0 ? (
                   <Avatar
                     variant="square"
                     className={classes.avatar}
@@ -68,7 +71,9 @@ function Cart(props) {
             <ListItemText
               primary={
                 <React.Fragment>
-                  <div className={classes.listTitle}>{item.product.fields.Name}</div>
+                  <div className={classes.listTitle}>
+                    {item.product.fields.Name}
+                  </div>
                 </React.Fragment>
               }
               secondary={
@@ -91,7 +96,9 @@ function Cart(props) {
                     <Box pl={1}>{`Qty: ${item.count}`}</Box>
                   </div>
                   <div className={classes.priceText}>
-                    {`Amount: ${item.product.fields["Price / Kg"] * item.count} JOD`}
+                    {`Amount: ${
+                      item.product.fields["Price / Kg"] * item.count
+                    } JOD`}
                   </div>
                 </React.Fragment>
               }
@@ -100,7 +107,13 @@ function Cart(props) {
           <Divider />
         </div>
       ))}
-      <Box>{`Total: 100 JOD`}</Box>
+      <ListItem className={classes.listitem}>
+        <ListItemIcon>
+          <MonetizationOn />
+        </ListItemIcon>
+        <ListItemText primary={`Total: ${props.cartItems.totalAmount} JOD`} />
+      </ListItem>
+      <OrderDialog linkText="Place Order"/>
     </List>
   );
 }
