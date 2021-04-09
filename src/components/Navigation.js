@@ -128,7 +128,6 @@ function Navigation(props) {
     const matchIndex = currentBasket.findIndex(
       (item) => item.id === params.item.id
     );
-    console.log(matchIndex, currentBasket);
     if (matchIndex > -1) {
       currentBasket[matchIndex].count += 1;
     } else {
@@ -152,13 +151,14 @@ function Navigation(props) {
     } 
     setCount(count + 1);
   };
-
-  useEffect(() => {
+/** 
+  useEffect((count) => {
+    console.log(basketList);
     if (basketList.length > 0) {
       setmyList(basketList);
     }
   }, [count]);
-
+*/
   const drawer = (
     <Box p={1}>
       <Box display="flex" flexDirection="row">

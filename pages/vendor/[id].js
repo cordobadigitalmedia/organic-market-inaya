@@ -54,7 +54,6 @@ export default function Vendor({ products, vendor }) {
     const matchIndex = currentBasket.findIndex(
       (item) => item.id === params.item.id
     );
-    console.log(matchIndex, currentBasket);
     if (matchIndex > -1) {
       currentBasket[matchIndex].count += 1;
     } else {
@@ -79,7 +78,7 @@ export default function Vendor({ products, vendor }) {
     setCount(count + 1);
   };
 
-  useEffect(() => {
+  useEffect((count) => {
     if (products.length > 0) {
       const productsWithCount = products.map((product) => {
         let updatedProd = product;
@@ -88,7 +87,7 @@ export default function Vendor({ products, vendor }) {
       });
       setmyProducts(productsWithCount);
     }
-  }, [products]);
+  },[count]);
 
   return (
     <Container>
