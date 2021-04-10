@@ -1,9 +1,11 @@
 ✔ cart - total amount @done (4/9/2021, 9:31:43 PM)
 ✔ cart - order button to call modal @done (4/9/2021, 9:58:45 PM)
-☐ modal - order form - cart summary, email/name, message, submit
+✔ modal - order form - cart summary, email/name, message, submit @done (4/10/2021, 8:37:00 AM)
+☐ Validate form & Send order to airtable and create user if needed
 ☐ add to local storage cart items
 ☐ bring airtable get and update to reduc store and update appropriate pages
 ☐ Add description text for vendors
+☐ Add close button in cart open mode
 ✔ Home page - card view @done (4/9/2021, 10:52:46 PM)
 ✔ open drawer when add to card in mobile view @done (4/9/2021, 11:54:03 PM)
 ✔ Make a nice default avatar @done (4/9/2021, 10:31:19 PM)

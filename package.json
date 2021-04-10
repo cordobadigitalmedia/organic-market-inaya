@@ -25,6 +25,7 @@
     "gray-matter": "^4.0.2",
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.20",
+    "luxon": "^1.26.0",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
