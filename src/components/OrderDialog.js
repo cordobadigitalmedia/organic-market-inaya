@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { add, remove } from "../store/cart.store";
+import { changeUser } from "../store/data.store";
 import { withStyles } from "@material-ui/core/styles";
 import { DateTime } from "luxon";
 import {
@@ -23,6 +24,7 @@ import {
   Avatar,
   ListItemSecondaryAction,
   Divider,
+  Snackbar,
 } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import Alert from "@material-ui/lab/Alert";
@@ -31,6 +33,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PinDropIcon from "@material-ui/icons/PinDrop";
 import { MonetizationOn } from "@material-ui/icons";
 import _ from "lodash";
+import ordersService from "../../src/services/ordersService";
 
 const styles = (theme) => ({});
 
@@ -54,6 +57,9 @@ const DialogTitle = withStyles(styles)((props) => {
 
 function OrderDialog(props) {
   const [showDialog, setshowDialog] = useState(false);
+  const [processing, setprocessing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [Message, setMessage] = useState({ type: "", value: "" });
 
   const handleClick = () => {
     setshowDialog(!showDialog);
@@ -63,10 +69,16 @@ function OrderDialog(props) {
     setshowDialog(false);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   const findPickupDate = () => {
     const dayINeed = 6; // for Thursday
     const today = DateTime.now().weekday;
-
     if (today < dayINeed) {
       return DateTime.now()
         .plus({ days: dayINeed - today })
@@ -77,6 +89,51 @@ function OrderDialog(props) {
       return DateTime.now()
         .plus({ days: 7 - (today - dayINeed) })
         .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setMessage({
+      type: "",
+      value: "",
+    });
+    var regexEmail = new RegExp(
+      "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    );
+    if (
+      regexEmail.test(props.dataProps.user.email) &&
+      props.dataProps.user.name !== ""
+    ) {
+      setprocessing(true);
+      setMessage({
+        type: "info",
+        value: "Order submission in process...",
+      });
+      setOpen(true);
+      const orderSubmitResults = await ordersService.addOrder({
+        user: props.dataProps.user,
+        records: props.cartItems.items,
+      });
+      if (orderSubmitResults.length > 0) {
+        setMessage({
+          type: "success",
+          value: "Successfully submitted your order.",
+        });
+        setOpen(true);
+        setprocessing(false);
+        //clear local object order and close window
+      } else {
+        setMessage({ type: "error", value: "Error submitting order." });
+        setOpen(true);
+      }
+    } else {
+      if (props.dataProps.user.name === "") {
+        setMessage({ type: "error", value: "Name is required" });
+        setOpen(true);
+      } else {
+        setMessage({ type: "error", value: "Email is not valid" });
+        setOpen(true);
+      }
     }
   };
 
@@ -122,10 +179,32 @@ function OrderDialog(props) {
               <CardContent>
                 <Box>
                   <Box pb={1}>
-                    <TextField id="name" label="Name" variant="outlined" />
+                    <TextField
+                      id="name"
+                      label="Name"
+                      variant="outlined"
+                      onChange={(evt) => {
+                        props.changeUser({
+                          name: evt.target.value,
+                          email: props.dataProps.user.email,
+                        });
+                      }}
+                      value={props.dataProps.user.name}
+                    />
                   </Box>
                   <Box>
-                    <TextField id="email" label="E-mail" variant="outlined" />
+                    <TextField
+                      id="email"
+                      label="E-mail"
+                      variant="outlined"
+                      onChange={(evt) => {
+                        props.changeUser({
+                          name: props.dataProps.user.name,
+                          email: evt.target.value,
+                        });
+                      }}
+                      value={props.dataProps.user.email}
+                    />
                   </Box>
                 </Box>
               </CardContent>
@@ -212,13 +291,21 @@ function OrderDialog(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleClick()}
-          >
-            Submit Order Now
-          </Button>
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={processing}
+              onClick={() => handleSubmit()}
+            >
+              Submit Order Now
+            </Button>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity={Message.type}>
+                {Message.value}
+              </Alert>
+            </Snackbar>
+          </Box>
         </DialogActions>
       </Dialog>
     </Box>
@@ -233,6 +320,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   remove,
   add,
+  changeUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDialog);

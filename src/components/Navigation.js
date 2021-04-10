@@ -20,7 +20,7 @@ import Box from "@material-ui/core/Box";
 import HomeIcon from "@material-ui/icons/Home";
 import Link from "next/link";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
   root: {

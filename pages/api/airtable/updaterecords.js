@@ -8,7 +8,7 @@ export default async (req, res) => {
   const records = req.body.records;
   try {
     const airtableBase = new Airtable({
-      apiKey: process.env.airtableApiKey,
+      apiKey: process.env.AIRTABLE_KEY,
     }).base(basekey);
     const airtableQueryResults = await airtableBase(table).update(records);
     res.status(200).json({ results: airtableQueryResults });

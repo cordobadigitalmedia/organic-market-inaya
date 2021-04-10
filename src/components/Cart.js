@@ -11,7 +11,7 @@ import {
   IconButton,
   Divider,
   Box,
-  Button
+  Button,
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, RemoveCircle, MonetizationOn } from "@material-ui/icons";
@@ -55,18 +55,7 @@ function Cart(props) {
         <div key={i}>
           <ListItem className={classes.listitem}>
             <ListItemAvatar>
-              <>
-                {"image" in item.product.fields &&
-                item.product.fields.image.length > 0 ? (
-                  <Avatar
-                    variant="square"
-                    className={classes.avatar}
-                    src={item.product.fields.image[0].url}
-                  />
-                ) : (
-                  <Avatar variant="square">{`${i + 1}`}</Avatar>
-                )}
-              </>
+              <Avatar variant="square">{`x${item.count}`}</Avatar>
             </ListItemAvatar>
             <ListItemText
               primary={
@@ -84,16 +73,15 @@ function Cart(props) {
                       className={classes.iconBtn}
                       onClick={() => props.add(item.product)}
                     >
-                      <AddCircle fontSize="small" />
+                      <AddCircle fontSize="large" />
                     </IconButton>
                     <IconButton
                       aria-label="remove"
                       className={classes.iconBtn}
                       onClick={() => props.remove(item.product)}
                     >
-                      <RemoveCircle fontSize="small" />
+                      <RemoveCircle fontSize="large" />
                     </IconButton>
-                    <Box pl={1}>{`Qty: ${item.count}`}</Box>
                   </div>
                   <div className={classes.priceText}>
                     {`Amount: ${
@@ -113,7 +101,7 @@ function Cart(props) {
         </ListItemIcon>
         <ListItemText primary={`Total: ${props.cartItems.totalAmount} JOD`} />
       </ListItem>
-      <OrderDialog linkText="Place Order"/>
+      <OrderDialog linkText="Place Order" />
     </List>
   );
 }
