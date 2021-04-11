@@ -5,7 +5,7 @@
 ✔ Add loading and toast message on success submitting order @done (4/10/2021, 6:06:10 PM)
 ✔ Add description text for vendors @done (4/10/2021, 9:30:57 PM)
 ☐ Close dialog window on order finished, show submitted order, clear cart
-☐ add to local storage cart items
+✔ add to local storage cart items @done (4/11/2021, 7:18:35 AM)å
 ☐ bring airtable get and update to reduc store and update appropriate pages
 ☐ Add close button in cart open mode
 ✔ Home page - card view @done (4/9/2021, 10:52:46 PM)
