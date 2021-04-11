@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getStateFromStorage, saveStateToStorage } from "../store/localStorage";
 import axios from "axios";
 const api = "https://husam278-api-server.herokuapp.com/api";
 
@@ -14,13 +15,13 @@ export const fetchData = createAsyncThunk("data/fetchData", async () => {
 
 const dataSlice = createSlice({
   name: "data",
-  initialState: {
+  initialState: getStateFromStorage("dataState", {
     categories: [],
     products: [],
     user: { email: "", name: "" },
     activeCategory: "",
     activeProduct: "",
-  },
+  }),
   reducers: {
     get(state, action) {
       return state;
@@ -30,6 +31,7 @@ const dataSlice = createSlice({
     },
     changeUser(state, action) {
       state.user = action.payload;
+      saveStateToStorage(state,"dataState");
       return state;
     },
     changeActiveCategory(state, action) {

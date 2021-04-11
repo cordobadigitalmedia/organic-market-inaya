@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getStateFromStorage, saveStateToStorage } from "../store/localStorage";
 
 const dataSlice = createSlice({
   name: "cart",
-  initialState: {
+  initialState: getStateFromStorage("cartState", {
     items: [],
     totalItems: 0,
     totalAmount: 0,
     showCart: false,
-  },
+  }),
   reducers: {
     show(state, action) {
       state.showCart = !action.payload;
@@ -32,6 +33,7 @@ const dataSlice = createSlice({
       state.totalAmount += action.payload.fields["Price / Kg"];
       state.totalItems++;
       state.showCart = true;
+      saveStateToStorage(state, "cartState");
       return state;
     },
     remove(state, action) {
@@ -56,6 +58,7 @@ const dataSlice = createSlice({
         }
       }
       state.showCart = true;
+      saveStateToStorage(state, "cartState");
       return state;
     },
   },

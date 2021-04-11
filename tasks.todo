@@ -3,7 +3,7 @@
 ✔ modal - order form - cart summary, email/name, message, submit @done (4/10/2021, 8:37:00 AM)
 ✔ Validate form & Send order to airtable and create user if needed @done (4/10/2021, 5:45:48 PM)
 ✔ Add loading and toast message on success submitting order @done (4/10/2021, 6:06:10 PM)
-☐ Add description text for vendors
+✔ Add description text for vendors @done (4/10/2021, 9:30:57 PM)
 ☐ Close dialog window on order finished, show submitted order, clear cart
 ☐ add to local storage cart items
 ☐ bring airtable get and update to reduc store and update appropriate pages
