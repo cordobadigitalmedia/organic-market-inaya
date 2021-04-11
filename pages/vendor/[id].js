@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navigation from "../../src/components/Navigation";
 import { Box, Typography, Container, Button } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -41,25 +41,21 @@ export const getServerSideProps = async ({ params }) => {
 
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
-  const [basketList, setBasketList] = useState([]);
 
   return (
     <Container>
       {products.length > 0 && (
         <Box>
           <Box className={classes.root}>
-            {basketList !== null && (
-              <Navigation
-                basketList={basketList}
-                title={vendor[0].fields.Name}
-              />
-            )}
+            <Navigation title={vendor[0].fields.Name} />
             <main className={classes.content}>
               <Box className={classes.toolbar} />
               {"Description" in vendor[0].fields &&
                 vendor[0].fields.Description !== "" && (
                   <Box>
-                    <Typography variant="body1" component="p">{vendor[0].fields.Description}</Typography>
+                    <Typography variant="body1" component="p">
+                      {vendor[0].fields.Description}
+                    </Typography>
                   </Box>
                 )}
               <ProductList products={products} mode="list" />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { show } from "../store/cart.store";
 import PropTypes from "prop-types";
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navigation(props) {
-  const { window, basketList, title } = props;
+  const { window, title } = props;
   const classes = useStyles();
   const theme = useTheme();
 
