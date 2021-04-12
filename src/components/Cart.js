@@ -73,14 +73,14 @@ function Cart(props) {
                       className={classes.iconBtn}
                       onClick={() => props.add(item.product)}
                     >
-                      <AddCircle fontSize="large" />
+                      <AddCircle fontSize="large" color="secondary"/>
                     </IconButton>
                     <IconButton
                       aria-label="remove"
                       className={classes.iconBtn}
                       onClick={() => props.remove(item.product)}
                     >
-                      <RemoveCircle fontSize="large" />
+                      <RemoveCircle fontSize="large" color="secondary"/>
                     </IconButton>
                   </div>
                   <div className={classes.priceText}>

@@ -58,7 +58,7 @@ export default function Vendor({ products, vendor }) {
                     </Typography>
                   </Box>
                 )}
-              <ProductList products={products} mode="list" />
+              <ProductList products={products} />
             </main>
           </Box>
         </Box>

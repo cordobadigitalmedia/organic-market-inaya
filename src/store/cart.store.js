@@ -14,6 +14,10 @@ const dataSlice = createSlice({
       state.showCart = !action.payload;
       return state;
     },
+    reset(state) {
+      state = { items: [], totalItems: 0, totalAmount: 0, showCart: false };
+      return state;
+    },
     add(state, action) {
       let found = false;
       state.items.map((item) => {
@@ -63,5 +67,5 @@ const dataSlice = createSlice({
     },
   },
 });
-export const { show, add, remove } = dataSlice.actions;
+export const { show, add, remove, reset } = dataSlice.actions;
 export default dataSlice.reducer;

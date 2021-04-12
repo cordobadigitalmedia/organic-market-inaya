@@ -60,6 +60,33 @@ const addUser = async (params) => {
   }
 };
 
+const getOrders = async (params) => {
+  let query = {
+    maxRecords: 100,
+    view: "All",
+  };
+  if ("filter" in params) {
+    query.filterByFormula = params.filter;
+  }
+  try {
+    const users = await axios.post(
+      process.env.rooturl + "/api/airtable/getrecords",
+      {
+        basekey: "appZWL1olBEapBzpF",
+        table: "Sales Orders",
+        query: query,
+      }
+    );
+    if ("results" in users.data && users.data.results.length > 0) {
+      return users.data.results;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    return { error: "Error getting data" };
+  }
+};
+
 const addOrder = async (params) => {
   let userid;
   const addUserResults = await addUser({
@@ -99,6 +126,6 @@ const addOrder = async (params) => {
 };
 
 const ordersService = {
-  addOrder,
+  addOrder, getOrders
 };
 export default ordersService;

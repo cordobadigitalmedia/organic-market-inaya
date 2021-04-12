@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { show } from "../store/cart.store";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
+import { AppBar, Avatar } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -60,6 +60,12 @@ const useStyles = makeStyles((theme) => ({
   navAvatar: {
     color: theme.palette.getContrastText(theme.palette.primary.main),
     backgroundColor: theme.palette.primary.main,
+  },
+  avatar: {
+    padding: 0,
+    paddingRight: theme.spacing(1),
+    minWidth: 80,
+    minHeight: 80,
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -146,9 +152,12 @@ function Navigation(props) {
           </IconButton>
           <div className={classes.appBarTitle}>{title}</div>
           <Link href="/">
-            <IconButton color="inherit">
-              <HomeIcon />
-            </IconButton>
+            <a>
+              <Avatar
+                className={classes.navAvatar}
+                src="/images/logo-avatar.jpg"
+              />
+            </a>
           </Link>
         </Toolbar>
       </AppBar>

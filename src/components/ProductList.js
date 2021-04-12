@@ -1,13 +1,7 @@
-
 import React from "react";
-import { connect } from 'react-redux';
-import {
-  get,
-  changeActiveCategory,
-  changeActiveProduct,
-  fetchData,
-} from '../store/data.store';
-import { add, remove } from '../store/cart.store';
+import { connect } from "react-redux";
+import { get } from "../store/data.store";
+import { add, remove } from "../store/cart.store";
 import {
   ListItemAvatar,
   Avatar,
@@ -20,6 +14,7 @@ import {
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, RemoveCircle, Storefront } from "@material-ui/icons";
+import theme from "../theme";
 
 const useStyles = makeStyles((theme) => ({
   iconBtn: {
@@ -57,11 +52,11 @@ function ProductList(props) {
 
   const addItem = (item) => {
     props.add(item);
-  }
+  };
 
   const removeItem = (item) => {
     props.remove(item);
-  }
+  };
 
   return (
     <List>
@@ -77,7 +72,9 @@ function ProductList(props) {
                     src={item.fields.image[0].url}
                   />
                 ) : (
-                  <Avatar variant="square"><Storefront /></Avatar>
+                  <Avatar variant="square">
+                    <Storefront />
+                  </Avatar>
                 )}
               </>
             </ListItemAvatar>
@@ -89,48 +86,25 @@ function ProductList(props) {
               }
               secondary={
                 <React.Fragment>
-                  {mode === "basket" && (
-                    <div component="form" className={classes.manageProduct}>
-                      <IconButton
-                        aria-label="add"
-                        className={classes.iconBtn}
-                        onClick={() => props.add(item)}
-                      >
-                        <AddCircle fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="remove"
-                        className={classes.iconBtn}
-                        onClick={() => props.remove(item)}
-                      >
-                        <RemoveCircle fontSize="small" />
-                      </IconButton>
-                      <Box pl={1}>{`Qty: ${item.count}`}</Box>
-                    </div>
-                  )}
                   <div className={classes.priceText}>
-                    {mode === "list"
-                      ? `Price/Kg: ${item.fields["Price / Kg"]} JOD`
-                      : `Amount: ${item.fields["Price / Kg"] * item.count} JOD`}
+                    {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
                   </div>
-                  {mode === "list" && (
-                    <div component="form" className={classes.manageProduct}>
-                      <IconButton
-                        aria-label="add"
-                        className={classes.iconBtn}
-                        onClick={() => addItem(item)}
-                      >
-                        <AddCircle fontSize="large" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="remove"
-                        className={classes.iconBtn}
-                        onClick={() => removeItem(item)}
-                      >
-                        <RemoveCircle fontSize="large" />
-                      </IconButton>
-                    </div>
-                  )}
+                  <div component="form" className={classes.manageProduct}>
+                    <IconButton
+                      aria-label="add"
+                      className={classes.iconBtn}
+                      onClick={() => addItem(item)}
+                    >
+                      <AddCircle fontSize="large" color="secondary"/>
+                    </IconButton>
+                    <IconButton
+                      aria-label="remove"
+                      className={classes.iconBtn}
+                      onClick={() => removeItem(item)}
+                    >
+                      <RemoveCircle fontSize="large" color="secondary"/>
+                    </IconButton>
+                  </div>
                 </React.Fragment>
               }
             />
@@ -138,7 +112,6 @@ function ProductList(props) {
           <Divider />
         </div>
       ))}
-      {mode === "basket" && <Box>{`Total: 100 JOD`}</Box>}
     </List>
   );
 }
@@ -150,12 +123,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   get,
-  changeActiveCategory,
-  changeActiveProduct,
-  fetchData,
   remove,
   add,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
-

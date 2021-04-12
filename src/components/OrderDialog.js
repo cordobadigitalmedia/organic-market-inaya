@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { add, remove } from "../store/cart.store";
-import { changeUser } from "../store/data.store";
-import { withStyles } from "@material-ui/core/styles";
+import { add, remove, reset } from "../store/cart.store";
+import { changeUser, saveRecentOrders, resetRecent } from "../store/data.store";
+import { makeStyles } from "@material-ui/core/styles";
 import { DateTime } from "luxon";
 import {
   CircularProgress,
@@ -35,12 +35,16 @@ import { MonetizationOn } from "@material-ui/icons";
 import _ from "lodash";
 import ordersService from "../../src/services/ordersService";
 
-const styles = (theme) => ({});
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    backgroundColor: theme.palette.secondary,
+  }
+}));
 
-const DialogTitle = withStyles(styles)((props) => {
+const DialogTitle = ((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <MuiDialogTitle disableTypography {...other}>
       <Box display="flex" flexDirection="row">
         <Box flexGrow={1} px={1}>
           <Typography variant="h5">{children}</Typography>
@@ -56,12 +60,16 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 function OrderDialog(props) {
+  const classes = useStyles();
   const [showDialog, setshowDialog] = useState(false);
   const [processing, setprocessing] = useState(false);
+  const [orderComplete, setOrderComplete] = useState(false);
   const [open, setOpen] = useState(false);
   const [Message, setMessage] = useState({ type: "", value: "" });
 
   const handleClick = () => {
+    props.resetRecent();
+    setOrderComplete(false);
     setshowDialog(!showDialog);
   };
 
@@ -77,6 +85,7 @@ function OrderDialog(props) {
   };
 
   const findPickupDate = () => {
+    //Thursday 12pm is the last time for order - if past this deadline, make it for next saturdya
     const dayINeed = 6; // for Thursday
     const today = DateTime.now().weekday;
     if (today < dayINeed) {
@@ -115,11 +124,15 @@ function OrderDialog(props) {
         records: props.cartItems.items,
       });
       if (orderSubmitResults.length > 0) {
+        props.saveRecentOrders(orderSubmitResults);
+        console.log(props.dataProps.recentOrders);
+        props.reset();
         setMessage({
           type: "success",
           value: "Successfully submitted your order.",
         });
         setOpen(true);
+        setOrderComplete(true);
         setprocessing(false);
         //clear local object order and close window
       } else {
@@ -137,14 +150,23 @@ function OrderDialog(props) {
     }
   };
 
+  const calculateTotal = (items) => {
+    let total = 0;
+    items.map((item) => {
+      total += item.fields.Qty * Number(item.fields["Price / Kg"]);
+    });
+    return total;
+  };
+
   return (
     <Box>
-      <Box display="flex" flexDirection="row">
+      <Box display="flex" flexDirection="row" pt={1}>
         <Button
           variant="contained"
           color="primary"
           onClick={() => handleClick()}
           disabled={props.cartItems.totalAmount === 0}
+          fullWidth
         >
           {props.linkText}
         </Button>
@@ -162,144 +184,212 @@ function OrderDialog(props) {
           Place Order
         </DialogTitle>
         <DialogContent dividers={true}>
-          <Box pb={1}>
-            <Card>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="person">
-                    <PersonAddIcon />
-                  </Avatar>
-                }
-                title={
-                  <Typography variant="h6" component="h4">
-                    Personal Information
-                  </Typography>
-                }
-              />
-              <CardContent>
-                <Box>
-                  <Box pb={1}>
-                    <TextField
-                      id="name"
-                      label="Name"
-                      variant="outlined"
-                      onChange={(evt) => {
-                        props.changeUser({
-                          name: evt.target.value,
-                          email: props.dataProps.user.email,
-                        });
-                      }}
-                      value={props.dataProps.user.name}
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      id="email"
-                      label="E-mail"
-                      variant="outlined"
-                      onChange={(evt) => {
-                        props.changeUser({
-                          name: props.dataProps.user.name,
-                          email: evt.target.value,
-                        });
-                      }}
-                      value={props.dataProps.user.email}
-                    />
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-          <Box pb={1}>
-            <Card>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="address">
-                    <PinDropIcon />
-                  </Avatar>
-                }
-                title={
-                  <Typography variant="h6" component="h4">
-                    {`Pickup on ${findPickupDate()}`}
-                  </Typography>
-                }
-              />
-              <CardContent>
+          <>
+            {orderComplete ? (
+              <Box>
+                <h3>Thank you for your oder.</h3>
                 <Typography variant="body1" component="p">
                   Please pickup and pay for your items below at Inaya
                   Permaculture's home organic farmers market on{" "}
                   <b>{findPickupDate()}</b> from 11:00 AM to 7:00 PM
                 </Typography>
-              </CardContent>
-            </Card>
-          </Box>
-          <Box pb={1}>
-            <Card>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="address">
-                    <MonetizationOn />
-                  </Avatar>
-                }
-                title={
-                  <Typography variant="h5" component="h3">
-                    Order Summary
-                  </Typography>
-                }
-              />
-              <CardContent>
                 <List>
-                  {props.cartItems.items.map((item, i) => (
-                    <div key={item}>
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar>{`${item.count}x`}</Avatar>
-                        </ListItemAvatar>
+                  {props.dataProps.recentOrders.length > 0 &&
+                    props.dataProps.recentOrders.map((item, i) => (
+                      <div key={item}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>{`${item.fields.Qty}x`}</Avatar>
+                          </ListItemAvatar>
 
-                        <ListItemText
-                          primary={
-                            <React.Fragment>
-                              <div>{item.product.fields.Name}</div>
-                            </React.Fragment>
-                          }
-                          secondary={
-                            <React.Fragment>
-                              <div>
-                                {`Amount: ${
-                                  item.product.fields["Price / Kg"] * item.count
-                                } JOD`}
-                              </div>
-                            </React.Fragment>
-                          }
-                        />
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
+                          <ListItemText
+                            primary={
+                              <React.Fragment>
+                                <div>{item.fields["Item Name"].join()}</div>
+                              </React.Fragment>
+                            }
+                            secondary={
+                              <React.Fragment>
+                                <div>
+                                  {`Amount: ${
+                                    item.fields["Price / Kg"] * item.fields.Qty
+                                  } JOD`}
+                                </div>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                        <Divider />
+                      </div>
+                    ))}
                   <ListItem>
                     <ListItemSecondaryAction>
                       <Box pt={2}>
                         <Typography variant="h6" component="h4">
-                          {`Total: ${props.cartItems.totalAmount} JOD`}
+                          {`Total: ${calculateTotal(
+                            props.dataProps.recentOrders
+                          )} JOD`}
                         </Typography>
                       </Box>
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
-              </CardContent>
-            </Card>
-          </Box>
+              </Box>
+            ) : (
+              <Box>
+                <Box pb={1}>
+                  <Card>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="person" className={classes.avatar}>
+                          <PersonAddIcon/>
+                        </Avatar>
+                      }
+                      title={
+                        <Typography variant="h6" component="h4">
+                          Personal Information
+                        </Typography>
+                      }
+                    />
+                    <CardContent>
+                      <Box>
+                        <Box pb={1}>
+                          <TextField
+                            id="name"
+                            label="Name"
+                            variant="outlined"
+                            onChange={(evt) => {
+                              props.changeUser({
+                                name: evt.target.value,
+                                email: props.dataProps.user.email,
+                              });
+                            }}
+                            value={props.dataProps.user.name}
+                          />
+                        </Box>
+                        <Box>
+                          <TextField
+                            id="email"
+                            label="E-mail"
+                            variant="outlined"
+                            onChange={(evt) => {
+                              props.changeUser({
+                                name: props.dataProps.user.name,
+                                email: evt.target.value,
+                              });
+                            }}
+                            value={props.dataProps.user.email}
+                          />
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box pb={1}>
+                  <Card>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="address">
+                          <PinDropIcon />
+                        </Avatar>
+                      }
+                      title={
+                        <Typography variant="h6" component="h4">
+                          {`Pickup on ${findPickupDate()}`}
+                        </Typography>
+                      }
+                    />
+                    <CardContent>
+                      <Typography variant="body1" component="p">
+                        Please pickup and pay for your items below at Inaya
+                        Permaculture's home organic farmers market on{" "}
+                        <b>{findPickupDate()}</b> from 11:00 AM to 7:00 PM
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box pb={1}>
+                  <Card>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="address">
+                          <MonetizationOn />
+                        </Avatar>
+                      }
+                      title={
+                        <Typography variant="h5" component="h3">
+                          Order Summary
+                        </Typography>
+                      }
+                    />
+                    <CardContent>
+                      <List>
+                        {props.cartItems.items.map((item, i) => (
+                          <div key={item}>
+                            <ListItem>
+                              <ListItemAvatar>
+                                <Avatar>{`${item.count}x`}</Avatar>
+                              </ListItemAvatar>
+
+                              <ListItemText
+                                primary={
+                                  <React.Fragment>
+                                    <div>{item.product.fields.Name}</div>
+                                  </React.Fragment>
+                                }
+                                secondary={
+                                  <React.Fragment>
+                                    <div>
+                                      {`Amount: ${
+                                        item.product.fields["Price / Kg"] *
+                                        item.count
+                                      } JOD`}
+                                    </div>
+                                  </React.Fragment>
+                                }
+                              />
+                            </ListItem>
+                            <Divider />
+                          </div>
+                        ))}
+                        <ListItem>
+                          <ListItemSecondaryAction>
+                            <Box pt={2}>
+                              <Typography variant="h6" component="h4">
+                                {`Total: ${props.cartItems.totalAmount} JOD`}
+                              </Typography>
+                            </Box>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      </List>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
+            )}
+          </>
         </DialogContent>
         <DialogActions>
           <Box>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={processing}
-              onClick={() => handleSubmit()}
-            >
-              Submit Order Now
-            </Button>
+            {orderComplete ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCloseDialog}
+              >
+                Close
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={processing}
+                onClick={() => handleSubmit()}
+              >
+                Submit Order Now
+              </Button>
+            )}
+
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
               <Alert onClose={handleClose} severity={Message.type}>
                 {Message.value}
@@ -320,7 +410,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   remove,
   add,
+  reset,
   changeUser,
+  saveRecentOrders,
+  resetRecent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDialog);
