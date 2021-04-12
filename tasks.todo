@@ -7,7 +7,7 @@
 ✔ Close dialog window on order finished, show submitted order, clear cart @done (4/12/2021, 6:58:03 AM)
 ✔ add to local storage cart items @done (4/11/2021, 7:18:35 AM)
 ☐ disable products based on delivery notice field
-☐ adjust delivery date based on close deadline by Thurday 12pm
+✔ adjust delivery date based on close deadline by Thurday 12pm @done (4/12/2021, 4:53:29 PM)
 ✔ Home page - card view @done (4/9/2021, 10:52:46 PM)
 ✔ open drawer when add to card in mobile view @done (4/9/2021, 11:54:03 PM)
 ✔ Make a nice default avatar @done (4/9/2021, 10:31:19 PM)

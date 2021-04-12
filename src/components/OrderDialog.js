@@ -38,10 +38,10 @@ import ordersService from "../../src/services/ordersService";
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.secondary,
-  }
+  },
 }));
 
-const DialogTitle = ((props) => {
+const DialogTitle = (props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography {...other}>
@@ -57,7 +57,7 @@ const DialogTitle = ((props) => {
       </Box>
     </MuiDialogTitle>
   );
-});
+};
 
 function OrderDialog(props) {
   const classes = useStyles();
@@ -85,15 +85,20 @@ function OrderDialog(props) {
   };
 
   const findPickupDate = () => {
-    //Thursday 12pm is the last time for order - if past this deadline, make it for next saturdya
-    const dayINeed = 6; // for Thursday
+    const deadlineDay = 4;
+    const deadlineHour = 12;
+    const dayINeed = 6; //
     const today = DateTime.now().weekday;
-    if (today < dayINeed) {
+    const todayHour = DateTime.now().hour;
+    console.log(today, todayHour);
+    if (today < deadlineDay) {
       return DateTime.now()
         .plus({ days: dayINeed - today })
         .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
-    } else if (today === dayINeed) {
-      return DateTime.now().toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
+    } else if (today === deadlineDay && todayHour <= deadlineHour) {
+      return DateTime.now()
+        .plus({ days: dayINeed - today })
+        .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     } else {
       return DateTime.now()
         .plus({ days: 7 - (today - dayINeed) })
@@ -242,7 +247,7 @@ function OrderDialog(props) {
                     <CardHeader
                       avatar={
                         <Avatar aria-label="person" className={classes.avatar}>
-                          <PersonAddIcon/>
+                          <PersonAddIcon />
                         </Avatar>
                       }
                       title={
