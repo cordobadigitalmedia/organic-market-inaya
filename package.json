@@ -27,6 +27,7 @@
     "lodash": "^4.17.20",
     "luxon": "^1.26.0",
     "next": "latest",
+    "nprogress": "^0.2.0",
     "prop-types": "latest",
     "react": "latest",
     "react-bootstrap": "^1.5.2",

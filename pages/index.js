@@ -1,7 +1,6 @@
 import React from "react";
 import Navigation from "../src/components/Navigation";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import utilStyles from "../styles/utils.module.css";
 import vendorsService from "../src/services/vendorsService";
 import {
   Card,
@@ -68,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export async function getServerSideProps() {
+  
   const vendors = await vendorsService.getVendors({});
   return {
     props: {
@@ -110,7 +110,7 @@ export default function Index({ vendors }) {
                       </CardContent>
                       <CardActions>
                         <Link href={`/vendor/${item.id}`}>
-                          <Button color="primary">View Items</Button>
+                          <Button>View Items</Button>
                         </Link>
                       </CardActions>
                     </Card>
