@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
 export async function getServerSideProps() {
   
   const vendors = await vendorsService.getVendors({});
@@ -73,6 +74,18 @@ export async function getServerSideProps() {
     props: {
       vendors,
     },
+  };
+}
+ */
+
+export async function getStaticProps() {
+
+  const vendors = await vendorsService.getVendors({});
+  return {
+    props: {
+      vendors,
+    },
+    revalidate: 1,
   };
 }
 
