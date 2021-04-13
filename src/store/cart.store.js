@@ -14,6 +14,10 @@ const dataSlice = createSlice({
       state.showCart = !action.payload;
       return state;
     },
+    hide(state, action) {
+      state.showCart = false;
+      return state;
+    },
     reset(state) {
       state = { items: [], totalItems: 0, totalAmount: 0, showCart: false };
       return state;
@@ -67,5 +71,5 @@ const dataSlice = createSlice({
     },
   },
 });
-export const { show, add, remove, reset } = dataSlice.actions;
+export const { show, add, remove, reset, hide } = dataSlice.actions;
 export default dataSlice.reducer;

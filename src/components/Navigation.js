@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { show } from "../store/cart.store";
+import { show, hide } from "../store/cart.store";
 import PropTypes from "prop-types";
-import { AppBar, Avatar } from "@material-ui/core";
+import { AppBar, Avatar, Button } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,6 +19,7 @@ import Logo from "./Logo";
 import Box from "@material-ui/core/Box";
 import HomeIcon from "@material-ui/icons/Home";
 import Link from "next/link";
+import CloseIcon from "@material-ui/icons/Close";
 
 const drawerWidth = 300;
 
@@ -124,14 +125,32 @@ function Navigation(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-    <Box p={1}>
+    <Box m={1}>
       <Box display="flex" flexDirection="row">
-        <ShoppingBasketIcon />
-        <Box pl={1}>
+        <Box mr={1}>
+          <Avatar>
+            <ShoppingBasketIcon />
+          </Avatar>
+        </Box>
+        <Box flexGrow={1} my={1}>
           <div className={utilStyles.headingLg}>Order Basket</div>
         </Box>
+        {props.cartItems.showCart && (
+          <Box>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => props.hide()}
+            >
+              Close
+            </Button>
+          </Box>
+        )}
       </Box>
-      <Divider />
+      <Box mt={1}>
+        <Divider />
+      </Box>
+
       <Cart />
     </Box>
   );
@@ -207,6 +226,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   show,
+  hide,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
