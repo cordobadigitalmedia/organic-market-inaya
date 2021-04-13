@@ -11,9 +11,12 @@ import {
   IconButton,
   Divider,
   Box,
+  Tooltip,
 } from "@material-ui/core/";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, RemoveCircle, Storefront } from "@material-ui/icons";
+import dataParser from "../utils/dataParser";
 import theme from "../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,22 +92,36 @@ function ProductList(props) {
                   <div className={classes.priceText}>
                     {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
                   </div>
-                  <div component="form" className={classes.manageProduct}>
-                    <IconButton
-                      aria-label="add"
-                      className={classes.iconBtn}
-                      onClick={() => addItem(item)}
-                    >
-                      <AddCircle fontSize="large" color="secondary"/>
-                    </IconButton>
-                    <IconButton
-                      aria-label="remove"
-                      className={classes.iconBtn}
-                      onClick={() => removeItem(item)}
-                    >
-                      <RemoveCircle fontSize="large" color="secondary"/>
-                    </IconButton>
-                  </div>
+                  {dataParser.disableProduct(item) ? (
+                    <div component="form" className={classes.manageProduct}>
+                      <Tooltip
+                        title={`Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation`}
+                      >
+                        <Alert severity="error">Not Available</Alert>
+                      </Tooltip>
+                    </div>
+                  ) : (
+                    <div component="form" className={classes.manageProduct}>
+                      <Tooltip title="Add to basket">
+                        <IconButton
+                          aria-label="add"
+                          className={classes.iconBtn}
+                          onClick={() => addItem(item)}
+                        >
+                          <AddCircle fontSize="large" color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Add to basket">
+                        <IconButton
+                          aria-label="remove"
+                          className={classes.iconBtn}
+                          onClick={() => removeItem(item)}
+                        >
+                          <RemoveCircle fontSize="large" color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  )}
                 </React.Fragment>
               }
             />

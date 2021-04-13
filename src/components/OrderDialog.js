@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { add, remove, reset } from "../store/cart.store";
 import { changeUser, saveRecentOrders, resetRecent } from "../store/data.store";
 import { makeStyles } from "@material-ui/core/styles";
-import { DateTime } from "luxon";
 import {
   CircularProgress,
   Button,
@@ -34,6 +33,7 @@ import PinDropIcon from "@material-ui/icons/PinDrop";
 import { MonetizationOn } from "@material-ui/icons";
 import _ from "lodash";
 import ordersService from "../../src/services/ordersService";
+import dataParser from "../utils/dataParser";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -82,27 +82,6 @@ function OrderDialog(props) {
       return;
     }
     setOpen(false);
-  };
-
-  const findPickupDate = () => {
-    const deadlineDay = 4;
-    const deadlineHour = 12;
-    const dayINeed = 6; //
-    const today = DateTime.now().weekday;
-    const todayHour = DateTime.now().hour;
-    if (today < deadlineDay) {
-      return DateTime.now()
-        .plus({ days: dayINeed - today })
-        .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
-    } else if (today === deadlineDay && todayHour <= deadlineHour) {
-      return DateTime.now()
-        .plus({ days: dayINeed - today })
-        .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
-    } else {
-      return DateTime.now()
-        .plus({ days: 7 - (today - dayINeed) })
-        .toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
-    }
   };
 
   const handleSubmit = async () => {
@@ -194,7 +173,7 @@ function OrderDialog(props) {
                 <Typography variant="body1" component="p">
                   Please pickup and pay for your items below at Inaya
                   Permaculture's home organic farmers market on{" "}
-                  <b>{findPickupDate()}</b> from 11:00 AM to 7:00 PM
+                  <b>{dataParser.findPickupDate()}</b> from 11:00 AM to 7:00 PM
                 </Typography>
                 <List>
                   {props.dataProps.recentOrders.length > 0 &&
@@ -298,7 +277,7 @@ function OrderDialog(props) {
                       }
                       title={
                         <Typography variant="h6" component="h4">
-                          {`Pickup on ${findPickupDate()}`}
+                          {`Pickup on ${dataParser.findPickupDate()}`}
                         </Typography>
                       }
                     />
@@ -306,7 +285,7 @@ function OrderDialog(props) {
                       <Typography variant="body1" component="p">
                         Please pickup and pay for your items below at Inaya
                         Permaculture's home organic farmers market on{" "}
-                        <b>{findPickupDate()}</b> from 11:00 AM to 7:00 PM
+                        <b>{dataParser.findPickupDate()}</b> from 11:00 AM to 7:00 PM
                       </Typography>
                     </CardContent>
                   </Card>
