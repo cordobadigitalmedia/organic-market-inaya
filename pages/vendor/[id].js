@@ -22,6 +22,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { id: "recVvqzqsYgyEGAzM" } },
+      { params: { id: "recZL5KJlGOhbnySl" } },
+    ],
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const { id } = params;
+  let products = [];
+  const vendor = await vendorsService.getVendors({
+    filter: "recordid = '" + id + "'",
+  });
+  products = await productsService.getProducts({
+    filter: "Vendorid = '" + id + "'",
+  });
+  return {
+    props: {
+      products,
+      vendor,
+      id,
+    },
+    revalidate: 1,
+  };
+}
+
+/** 
 export const getServerSideProps = async ({ params }) => {
   const { id } = params;
   const vendor = await vendorsService.getVendors({
@@ -38,13 +68,14 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
+*/
 
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
 
   return (
     <Container>
-      {products.length > 0 && (
+      {Array.isArray(products) && products.length > 0 && (
         <Box>
           <Box className={classes.root}>
             <Navigation title={vendor[0].fields.Name} />

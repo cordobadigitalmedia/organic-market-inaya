@@ -10,7 +10,7 @@ const getUser = async (params) => {
   }
   try {
     const users = await axios.post(
-      process.env.rooturl + "/api/airtable/getrecords",
+      process.env.apiurl + "/api/airtable/getrecords",
       {
         basekey: "appZWL1olBEapBzpF",
         table: "Customers",
@@ -39,7 +39,7 @@ const addUser = async (params) => {
     _field.Name = params.record.name;
     try {
       const userResults = await axios.post(
-        process.env.rooturl + "/api/airtable/createrecords",
+        process.env.apiurl + "/api/airtable/createrecords",
         {
           basekey: "appZWL1olBEapBzpF",
           table: "Customers",
@@ -70,7 +70,7 @@ const getOrders = async (params) => {
   }
   try {
     const users = await axios.post(
-      process.env.rooturl + "/api/airtable/getrecords",
+      process.env.apiurl + "/api/airtable/getrecords",
       {
         basekey: "appZWL1olBEapBzpF",
         table: "Sales Orders",
@@ -126,6 +126,7 @@ const addOrder = async (params) => {
 };
 
 const ordersService = {
-  addOrder, getOrders
+  addOrder,
+  getOrders,
 };
 export default ordersService;

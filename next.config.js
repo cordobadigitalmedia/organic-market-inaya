@@ -6,6 +6,7 @@ module.exports = (phase, { defaultConfig }) => {
       /* development only config options here */
       env: {
         rooturl: "http://localhost:3000",
+        apiurl: "https://organic-market-api.vercel.app"
       },
     };
   }
@@ -14,6 +15,7 @@ module.exports = (phase, { defaultConfig }) => {
     /* config options for all phases except development here */
     env: {
       rooturl: "https://organic-market-inaya.vercel.app",
+      apiurl: "https://organic-market-api.vercel.app"
     },
   };
 };

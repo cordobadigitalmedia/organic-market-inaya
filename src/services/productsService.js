@@ -10,7 +10,7 @@ const getProducts = async (params) => {
   }
   try {
     const products = await axios.post(
-      process.env.rooturl + "/api/airtable/getrecords",
+      process.env.apiurl + "/api/airtable/getrecords",
       {
         basekey: "appZWL1olBEapBzpF",
         table: "Products",
