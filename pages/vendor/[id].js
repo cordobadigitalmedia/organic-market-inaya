@@ -51,25 +51,6 @@ export async function getStaticProps({ params }) {
   };
 }
 
-/** 
-export const getServerSideProps = async ({ params }) => {
-  const { id } = params;
-  const vendor = await vendorsService.getVendors({
-    filter: "recordid = '" + id + "'",
-  });
-  const products = await productsService.getProducts({
-    filter: "Vendorid = '" + id + "'",
-  });
-  return {
-    props: {
-      products,
-      vendor,
-      id,
-    },
-  };
-};
-*/
-
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
 

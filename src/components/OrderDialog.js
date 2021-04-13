@@ -90,7 +90,6 @@ function OrderDialog(props) {
     const dayINeed = 6; //
     const today = DateTime.now().weekday;
     const todayHour = DateTime.now().hour;
-    console.log(today, todayHour);
     if (today < deadlineDay) {
       return DateTime.now()
         .plus({ days: dayINeed - today })
@@ -130,7 +129,6 @@ function OrderDialog(props) {
       });
       if (orderSubmitResults.length > 0) {
         props.saveRecentOrders(orderSubmitResults);
-        console.log(props.dataProps.recentOrders);
         props.reset();
         setMessage({
           type: "success",

@@ -10,7 +10,7 @@ const getVendors = async (params) => {
   }  
   try {
     const vendors = await axios.post(
-      process.env.apiurl + "/api/airtable/getrecords",
+      process.env.rooturl + "/api/airtable/getrecords",
       {
         basekey: "appZWL1olBEapBzpF",
         table: "Vendors",
