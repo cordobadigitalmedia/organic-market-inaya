@@ -9,6 +9,7 @@
 ✔ disable products based on delivery notice field @done (4/13/2021, 9:16:06 AM)
 ✔ Static delivery notice note on order dialog @done (4/13/2021, 9:20:14 AM)
 ☐ Dynamic a message at the top of orderdialog related to deadline order date and time
+☐ Add phone number with alert as to why it's needed
 ✔ adjust delivery date based on close deadline by Thurday 12pm @done (4/12/2021, 4:53:29 PM)
 ✔ Home page - card view @done (4/9/2021, 10:52:46 PM)
 ✔ open drawer when add to card in mobile view @done (4/9/2021, 11:54:03 PM)

@@ -111,7 +111,7 @@ function ProductList(props) {
                           <AddCircle fontSize="large" color="secondary" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Add to basket">
+                      <Tooltip title="Remove from basket">
                         <IconButton
                           aria-label="remove"
                           className={classes.iconBtn}
