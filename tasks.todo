@@ -6,8 +6,9 @@
 ✔ Add description text for vendors @done (4/10/2021, 9:30:57 PM)
 ✔ Close dialog window on order finished, show submitted order, clear cart @done (4/12/2021, 6:58:03 AM)
 ✔ add to local storage cart items @done (4/11/2021, 7:18:35 AM)
-☐ disable products based on delivery notice field
-☐ Add a message at the top of orderdialog related to deadline order date and time
+✔ disable products based on delivery notice field @done (4/13/2021, 9:16:06 AM)
+✔ Static delivery notice note on order dialog @done (4/13/2021, 9:20:14 AM)
+☐ Dynamic a message at the top of orderdialog related to deadline order date and time
 ✔ adjust delivery date based on close deadline by Thurday 12pm @done (4/12/2021, 4:53:29 PM)
 ✔ Home page - card view @done (4/9/2021, 10:52:46 PM)
 ✔ open drawer when add to card in mobile view @done (4/9/2021, 11:54:03 PM)

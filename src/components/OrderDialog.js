@@ -170,6 +170,7 @@ function OrderDialog(props) {
             {orderComplete ? (
               <Box>
                 <h3>Thank you for your oder.</h3>
+                <Alert>{`Please note that orders for the upcoming Saturday will close on Thursday at 12pm. The pickup date will change accordingly if you order after Thursday at 12pm`}</Alert>
                 <Typography variant="body1" component="p">
                   Please pickup and pay for your items below at Inaya
                   Permaculture's home organic farmers market on{" "}
@@ -285,7 +286,8 @@ function OrderDialog(props) {
                       <Typography variant="body1" component="p">
                         Please pickup and pay for your items below at Inaya
                         Permaculture's home organic farmers market on{" "}
-                        <b>{dataParser.findPickupDate()}</b> from 11:00 AM to 7:00 PM
+                        <b>{dataParser.findPickupDate()}</b> from 11:00 AM to
+                        7:00 PM
                       </Typography>
                     </CardContent>
                   </Card>
