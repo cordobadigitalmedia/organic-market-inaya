@@ -94,7 +94,8 @@ function OrderDialog(props) {
     );
     if (
       regexEmail.test(props.dataProps.user.email) &&
-      props.dataProps.user.name !== ""
+      props.dataProps.user.name !== "" &&
+      props.dataProps.user.phone !== ""
     ) {
       setprocessing(true);
       setMessage({
@@ -125,9 +126,12 @@ function OrderDialog(props) {
       if (props.dataProps.user.name === "") {
         setMessage({ type: "error", value: "Name is required" });
         setOpen(true);
+      } else if (props.dataProps.user.phone === "") {
+        setMessage({ type: "error", value: "Phone is required." });
+        setOpen(true);
       } else {
         setMessage({ type: "error", value: "Email is not valid" });
-        setOpen(true);
+        setOpen(true);        
       }
     }
   };
@@ -170,7 +174,6 @@ function OrderDialog(props) {
             {orderComplete ? (
               <Box>
                 <h3>Thank you for your oder.</h3>
-                <Alert>{`Please note that orders for the upcoming Saturday will close on Thursday at 12pm. The pickup date will change accordingly if you order after Thursday at 12pm`}</Alert>
                 <Typography variant="body1" component="p">
                   Please pickup and pay for your items below at Inaya
                   Permaculture's home organic farmers market on{" "}
@@ -241,27 +244,48 @@ function OrderDialog(props) {
                             id="name"
                             label="Name"
                             variant="outlined"
+                            fullWidth
                             onChange={(evt) => {
                               props.changeUser({
                                 name: evt.target.value,
                                 email: props.dataProps.user.email,
+                                phone: props.dataProps.user.phone,
                               });
                             }}
                             value={props.dataProps.user.name}
                           />
                         </Box>
-                        <Box>
+                        <Box pb={1}>
                           <TextField
                             id="email"
                             label="E-mail"
+                            fullWidth
                             variant="outlined"
                             onChange={(evt) => {
                               props.changeUser({
                                 name: props.dataProps.user.name,
                                 email: evt.target.value,
+                                phone: props.dataProps.user.phone,
                               });
                             }}
                             value={props.dataProps.user.email}
+                          />
+                        </Box>
+                        <Box>
+                          <TextField
+                            id="phone"
+                            label="Phone"
+                            variant="outlined"
+                            fullWidth
+                            helperText="A phone number is required so that we can update you with the status of your order via telegram"
+                            onChange={(evt) => {
+                              props.changeUser({
+                                name: props.dataProps.user.name,
+                                email: props.dataProps.user.email,
+                                phone: evt.target.value,
+                              });
+                            }}
+                            value={props.dataProps.user.phone}
                           />
                         </Box>
                       </Box>
@@ -289,6 +313,7 @@ function OrderDialog(props) {
                         <b>{dataParser.findPickupDate()}</b> from 11:00 AM to
                         7:00 PM
                       </Typography>
+                      <Alert severity="warning">{`Please note that orders for the upcoming Saturday will close on Thursday at 12pm. The pickup date will change accordingly if you order after Thursday at 12pm`}</Alert>
                     </CardContent>
                   </Card>
                 </Box>

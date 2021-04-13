@@ -37,6 +37,7 @@ const addUser = async (params) => {
     let _field = {};
     _field.Email = params.record.email;
     _field.Name = params.record.name;
+    _field.Phone = params.record.phone;
     try {
       const userResults = await axios.post(
         process.env.rooturl + "/api/airtable/createrecords",

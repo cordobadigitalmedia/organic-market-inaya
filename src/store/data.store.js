@@ -4,7 +4,7 @@ import { getStateFromStorage, saveStateToStorage } from "../store/localStorage";
 const dataSlice = createSlice({
   name: "data",
   initialState: getStateFromStorage("dataState", {
-    user: { email: "", name: "" },
+    user: { email: "", name: "", phone: "" },
     recentOrders: [],
   }),
   reducers: {
