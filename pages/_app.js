@@ -33,7 +33,7 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
-        <title>Inaya Permaculure Organic Market</title>
+        <title>Inaya Permaculture Organic Market</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
