@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
-const deadlineDay = 4;
-const deadlineHour = 12;
+const deadlineDay = 5;
+const deadlineHour = 19;
 const dayINeed = 6; //
 
 const findPickupDate = () => {
@@ -23,11 +23,18 @@ const findPickupDate = () => {
 };
 
 const disableProduct = (item) => {
-  const today = DateTime.now().weekday;
   let disable = false;
-  if ("Delivery Notice" in item.fields && item.fields["Delivery Notice"] > 0) {
-    if (today > dayINeed - item.fields["Delivery Notice"]) {
-      disable = true;
+  if ("Initial Stock" in item.fields && item.fields["Initial Stock"] === 0) {
+    disable = true;
+  } else {
+    const today = DateTime.now().weekday;
+    if (
+      "Delivery Notice" in item.fields &&
+      item.fields["Delivery Notice"] > 0
+    ) {
+      if (today > dayINeed - item.fields["Delivery Notice"]) {
+        disable = true;
+      }
     }
   }
   return disable;

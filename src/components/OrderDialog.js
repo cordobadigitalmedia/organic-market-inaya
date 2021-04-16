@@ -131,7 +131,7 @@ function OrderDialog(props) {
         setOpen(true);
       } else {
         setMessage({ type: "error", value: "Email is not valid" });
-        setOpen(true);        
+        setOpen(true);
       }
     }
   };
@@ -197,9 +197,9 @@ function OrderDialog(props) {
                             secondary={
                               <React.Fragment>
                                 <div>
-                                  {`Amount: ${
+                                  {`Amount: ${(
                                     item.fields["Price / Kg"] * item.fields.Qty
-                                  } JOD`}
+                                  ).toFixed(2)} JOD`}
                                 </div>
                               </React.Fragment>
                             }
@@ -214,7 +214,7 @@ function OrderDialog(props) {
                         <Typography variant="h6" component="h4">
                           {`Total: ${calculateTotal(
                             props.dataProps.recentOrders
-                          )} JOD`}
+                          ).toFixed(2)} JOD`}
                         </Typography>
                       </Box>
                     </ListItemSecondaryAction>
@@ -349,10 +349,10 @@ function OrderDialog(props) {
                                 secondary={
                                   <React.Fragment>
                                     <div>
-                                      {`Amount: ${
+                                      {`Amount: ${(
                                         item.product.fields["Price / Kg"] *
                                         item.count
-                                      } JOD`}
+                                      ).toFixed(2)} JOD`}
                                     </div>
                                   </React.Fragment>
                                 }
@@ -365,7 +365,9 @@ function OrderDialog(props) {
                           <ListItemSecondaryAction>
                             <Box pt={2}>
                               <Typography variant="h6" component="h4">
-                                {`Total: ${props.cartItems.totalAmount} JOD`}
+                                {`Total: ${props.cartItems.totalAmount.toFixed(
+                                  2
+                                )} JOD`}
                               </Typography>
                             </Box>
                           </ListItemSecondaryAction>

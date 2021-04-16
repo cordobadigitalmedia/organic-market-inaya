@@ -52,56 +52,48 @@ function Cart(props) {
   return (
     <List>
       {props.cartItems.items.map((item, i) => (
-        <div key={i}>
+        <Box key={i * 100}>
           <ListItem className={classes.listitem}>
             <ListItemAvatar>
               <Avatar variant="square">{`x${item.count}`}</Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <div className={classes.listTitle}>
-                    {item.product.fields.Name}
-                  </div>
-                </React.Fragment>
-              }
-              secondary={
-                <React.Fragment>
-                  <div component="form" className={classes.manageProduct}>
-                    <IconButton
-                      aria-label="add"
-                      className={classes.iconBtn}
-                      onClick={() => props.add(item.product)}
-                    >
-                      <AddCircle fontSize="large" color="secondary"/>
-                    </IconButton>
-                    <IconButton
-                      aria-label="remove"
-                      className={classes.iconBtn}
-                      onClick={() => props.remove(item.product)}
-                    >
-                      <RemoveCircle fontSize="large" color="secondary"/>
-                    </IconButton>
-                  </div>
-                  <div className={classes.priceText}>
-                    {`Amount: ${
-                      item.product.fields["Price / Kg"] * item.count
-                    } JOD`}
-                  </div>
-                </React.Fragment>
-              }
-            />
+            <Box>
+              <Box className={classes.listTitle}>
+                {item.product.fields.Name}
+              </Box>
+              <Box component="form" className={classes.manageProduct}>
+                <IconButton
+                  aria-label="add"
+                  className={classes.iconBtn}
+                  onClick={() => props.add(item.product)}
+                >
+                  <AddCircle fontSize="large" color="secondary" />
+                </IconButton>
+                <IconButton
+                  aria-label="remove"
+                  className={classes.iconBtn}
+                  onClick={() => props.remove(item.product)}
+                >
+                  <RemoveCircle fontSize="large" color="secondary" />
+                </IconButton>
+              </Box>
+              <Box className={classes.priceText}>
+                {`Amount: ${
+                  (item.product.fields["Price / Kg"] * item.count).toFixed(2)
+                } JOD`}
+              </Box>
+            </Box>
           </ListItem>
           <Divider />
-        </div>
+        </Box>
       ))}
       <ListItem className={classes.listitem}>
         <ListItemIcon>
           <MonetizationOn />
         </ListItemIcon>
-        <ListItemText primary={`Total: ${props.cartItems.totalAmount} JOD`} />
+        <ListItemText primary={`Total: ${props.cartItems.totalAmount.toFixed(2)} JOD`} />
       </ListItem>
-      <OrderDialog linkText="Place Order" />
+      <OrderDialog linkText="Place Order"/>
     </List>
   );
 }

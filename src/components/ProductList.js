@@ -64,7 +64,7 @@ function ProductList(props) {
   return (
     <List>
       {products.map((item, i) => (
-        <div key={i}>
+        <Box key={i * 1000}>
           <ListItem className={classes.listitem}>
             <ListItemAvatar>
               <>
@@ -81,53 +81,47 @@ function ProductList(props) {
                 )}
               </>
             </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <div className={classes.listTitle}>{item.fields.Name}</div>
-                </React.Fragment>
-              }
-              secondary={
-                <React.Fragment>
-                  <div className={classes.priceText}>
-                    {`Price/Kg: ${item.fields["Price / Kg"]} JOD`}
-                  </div>
-                  {dataParser.disableProduct(item) ? (
-                    <div component="form" className={classes.manageProduct}>
-                      <Tooltip
-                        title={`Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation`}
+            <Box>
+              <Box className={classes.listTitle}>{item.fields.Name}</Box>
+              <React.Fragment>
+                <Box className={classes.priceText}>
+                  {`Price/Kg: ${item.fields["Price / Kg"].toFixed(2)} JOD`}
+                </Box>
+                {dataParser.disableProduct(item) ? (
+                  <Box component="form" className={classes.manageProduct}>
+                    <Tooltip
+                      title={`Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation`}
+                    >
+                      <Alert severity="error">Not Available</Alert>
+                    </Tooltip>
+                  </Box>
+                ) : (
+                  <Box component="form" className={classes.manageProduct}>
+                    <Tooltip title="Add to basket">
+                      <IconButton
+                        aria-label="add"
+                        className={classes.iconBtn}
+                        onClick={() => addItem(item)}
                       >
-                        <Alert severity="error">Not Available</Alert>
-                      </Tooltip>
-                    </div>
-                  ) : (
-                    <div component="form" className={classes.manageProduct}>
-                      <Tooltip title="Add to basket">
-                        <IconButton
-                          aria-label="add"
-                          className={classes.iconBtn}
-                          onClick={() => addItem(item)}
-                        >
-                          <AddCircle fontSize="large" color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Remove from basket">
-                        <IconButton
-                          aria-label="remove"
-                          className={classes.iconBtn}
-                          onClick={() => removeItem(item)}
-                        >
-                          <RemoveCircle fontSize="large" color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  )}
-                </React.Fragment>
-              }
-            />
+                        <AddCircle fontSize="large" color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Remove from basket">
+                      <IconButton
+                        aria-label="remove"
+                        className={classes.iconBtn}
+                        onClick={() => removeItem(item)}
+                      >
+                        <RemoveCircle fontSize="large" color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                )}
+              </React.Fragment>
+            </Box>
           </ListItem>
           <Divider />
-        </div>
+        </Box>
       ))}
     </List>
   );

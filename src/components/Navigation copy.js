@@ -127,12 +127,22 @@ function Navigation(props) {
   const drawer = (
     <Box m={1}>
       <Box display="flex" flexDirection="row">
-        <ShoppingBasketIcon />
-        <Box flexGrow={1}>
+        <Box mr={1}>
+          <Avatar>
+            <ShoppingBasketIcon />
+          </Avatar>
+        </Box>
+        <Box flexGrow={1} my={1}>
           <div className={utilStyles.headingLg}>Order Basket</div>
         </Box>
         {props.cartItems.showCart && (
-          <Button onClick={props.hide}>Close</Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => props.hide()}
+          >
+            Close
+          </Button>
         )}
       </Box>
       <Divider />
@@ -141,7 +151,7 @@ function Navigation(props) {
   );
 
   return (
-    <Box>
+    <div>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -154,7 +164,7 @@ function Navigation(props) {
           >
             <ShoppingBasketIcon />
           </IconButton>
-          <Box className={classes.appBarTitle}>{title}</Box>
+          <div className={classes.appBarTitle}>{title}</div>
           <Link href="/">
             <a>
               <Avatar
@@ -165,7 +175,7 @@ function Navigation(props) {
           </Link>
         </Toolbar>
       </AppBar>
-      <Box className={classes.drawer}>
+      <div className={classes.drawer}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
@@ -195,8 +205,8 @@ function Navigation(props) {
             {drawer}
           </Drawer>
         </Hidden>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }
 

@@ -89,7 +89,7 @@ export default function Index({ vendors }) {
               <Box className={classes.toolbar} />
               <Grid container spacing={4}>
                 {vendors.map((item, i) => (
-                  <Grid item key={item} xs={12} sm={6} md={4}>
+                  <Grid item key={i*10} xs={12} sm={6} md={4}>
                     <Card className={classes.card}>
                       <Link href={`/vendor/${item.id}`}>
                         <a>
