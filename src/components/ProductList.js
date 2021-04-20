@@ -87,17 +87,9 @@ function ProductList(props) {
                 <Box className={classes.priceText}>
                   {`Price/Kg: ${item.fields["Price / Kg"].toFixed(2)} JOD`}
                 </Box>
-                {dataParser.disableProduct(item) ? (
-                  <Box component="form" className={classes.manageProduct}>
-                    <Tooltip
-                      title={`Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation`}
-                    >
-                      <Alert severity="error">Not Available</Alert>
-                    </Tooltip>
-                  </Box>
-                ) : (
-                  <Box component="form" className={classes.manageProduct}>
-                    <Tooltip title="Add to basket">
+                <Box component="form" className={classes.manageProduct}>
+                  {dataParser.disableProduct(item).status === false && (
+                    <Box>
                       <IconButton
                         aria-label="add"
                         className={classes.iconBtn}
@@ -105,8 +97,6 @@ function ProductList(props) {
                       >
                         <AddCircle fontSize="large" color="secondary" />
                       </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Remove from basket">
                       <IconButton
                         aria-label="remove"
                         className={classes.iconBtn}
@@ -114,9 +104,18 @@ function ProductList(props) {
                       >
                         <RemoveCircle fontSize="large" color="secondary" />
                       </IconButton>
-                    </Tooltip>
-                  </Box>
-                )}
+                    </Box>
+                  )}
+                  {dataParser.disableProduct(item).status && (
+                    <Box component="form" className={classes.manageProduct}>
+                      <Tooltip
+                        title={dataParser.disableProduct(item).reason === "delivery" ? `Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation` : `Not in stock`}
+                      >
+                        <Alert severity="error">N/A</Alert>
+                      </Tooltip>
+                    </Box>
+                  )}
+                </Box>
               </React.Fragment>
             </Box>
           </ListItem>

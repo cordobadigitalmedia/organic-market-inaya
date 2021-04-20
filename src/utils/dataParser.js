@@ -24,20 +24,19 @@ const findPickupDate = () => {
 
 const disableProduct = (item) => {
   let disable = false;
+  let reason = "";
   if ("Initial Stock" in item.fields && item.fields["Initial Stock"] === 0) {
     disable = true;
-  } else {
-    const today = DateTime.now().weekday;
-    if (
-      "Delivery Notice" in item.fields &&
-      item.fields["Delivery Notice"] > 0
-    ) {
-      if (today > dayINeed - item.fields["Delivery Notice"]) {
-        disable = true;
-      }
+    return { status: disable, reason: "stock" };
+  }
+  const today = DateTime.now().weekday;
+  if ("Delivery Notice" in item.fields && item.fields["Delivery Notice"] > 0) {
+    if (today > dayINeed - item.fields["Delivery Notice"]) {
+      disable = true;
+      return { status: disable, reason: "delivery" };
     }
   }
-  return disable;
+  return { status: disable, reason: "" };
 };
 
 const dataParser = {
