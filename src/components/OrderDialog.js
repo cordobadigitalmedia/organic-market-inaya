@@ -313,7 +313,7 @@ function OrderDialog(props) {
                         <b>{dataParser.findPickupDate()}</b> from 11:00 AM to
                         7:00 PM
                       </Typography>
-                      <Alert severity="warning">{`Please note that orders for the upcoming Saturday will close on Thursday at 12pm. The pickup date will change accordingly if you order after Thursday at 12pm`}</Alert>
+                      <Alert severity="warning">{`Please note that orders for the upcoming Saturday will close on ${dataParser.showDeadline()}. The pickup date will change accordingly if you order after ${dataParser.showDeadline()}`}</Alert>
                     </CardContent>
                   </Card>
                 </Box>

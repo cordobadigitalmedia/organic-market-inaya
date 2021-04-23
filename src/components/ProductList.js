@@ -51,8 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProductList(props) {
   const classes = useStyles();
-  const { products, mode } = props;
-
+  const { products } = props;
   const addItem = (item) => {
     props.add(item);
   };
@@ -109,7 +108,11 @@ function ProductList(props) {
                   {dataParser.disableProduct(item).status && (
                     <Box component="form" className={classes.manageProduct}>
                       <Tooltip
-                        title={dataParser.disableProduct(item).reason === "delivery" ? `Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation` : `Not in stock`}
+                        title={
+                          dataParser.disableProduct(item).reason === "delivery"
+                            ? `Item cannot be added as it needs ${item.fields["Delivery Notice"]} days for preparation`
+                            : `Not in stock`
+                        }
                       >
                         <Alert severity="error">N/A</Alert>
                       </Tooltip>

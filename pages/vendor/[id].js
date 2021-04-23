@@ -1,10 +1,19 @@
 import React from "react";
 import Navigation from "../../src/components/Navigation";
-import { Box, Typography, Container, Button } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  Container,
+  Button,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import productsService from "../../src/services/productsService";
 import vendorsService from "../../src/services/vendorsService";
 import ProductList from "../../src/components/ProductList";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const drawerWidth = 260;
 
@@ -53,7 +62,16 @@ export async function getStaticProps({ params }) {
 
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
-
+  let categories = [];
+  if (vendor[0].fields.useCategories) {
+    categories = [
+      ...new Set(products.map((product) => product.fields.Category)),
+    ];
+  }
+  const [expanded, setExpanded] = React.useState(false);
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
   return (
     <Container>
       {Array.isArray(products) && products.length > 0 && (
@@ -70,7 +88,34 @@ export default function Vendor({ products, vendor }) {
                     </Typography>
                   </Box>
                 )}
-              <ProductList products={products} />
+              {categories.length > 0 ? (
+                <Box>
+                  {categories.map((category, i) => (
+                    <Accordion
+                      key={i}
+                      expanded={expanded === i}
+                      onChange={handleChange(i)}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${i}-content`}
+                        id={`panel${i}-header`}
+                      >
+                        <Typography>{category}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <ProductList
+                          products={products.filter(
+                            (product) => product.fields.Category === category
+                          )}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                  ))}
+                </Box>
+              ) : (
+                <ProductList products={products} />
+              )}
             </main>
           </Box>
         </Box>

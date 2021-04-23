@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export async function getStaticProps() {
-
+  //make vendorsService the fetcher
+  //call fetcher here as initial values
   const vendors = await vendorsService.getVendors({});
   return {
     props: {
@@ -78,6 +79,7 @@ export async function getStaticProps() {
 }
 
 export default function Index({ vendors }) {
+  //call useswr here with the same fetcher
   const classes = useStyles();
   return (
     <Container>

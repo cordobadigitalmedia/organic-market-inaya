@@ -22,6 +22,21 @@ const findPickupDate = () => {
   }
 };
 
+const showDeadline = () => {
+  const today = DateTime.now().weekday;
+  if (today <= deadlineDay) {
+    return DateTime.now()
+      .set({ hour: deadlineHour, minute: 0 })
+      .plus({ days: deadlineDay - today })
+      .toFormat("EEEE 'at' hh:mm a");
+  } else {
+    return DateTime.now()
+      .set({ hour: deadlineHour, minute: 0 })
+      .plus({ days: 7 - (today - deadlineDay) })
+      .toFormat("EEEE 'at' hh:mm a");
+  }
+};
+
 const disableProduct = (item) => {
   let disable = false;
   let reason = "";
@@ -42,5 +57,6 @@ const disableProduct = (item) => {
 const dataParser = {
   findPickupDate,
   disableProduct,
+  showDeadline,
 };
 export default dataParser;
