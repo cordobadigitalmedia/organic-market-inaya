@@ -63,7 +63,7 @@ export async function getStaticProps({ params }) {
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
   let categories = [];
-  if (vendor[0].fields.useCategories) {
+  if (Array.isArray(vendor) && vendor.length > 0 && vendor[0].fields.useCategories) {
     categories = [
       ...new Set(products.map((product) => product.fields.Category)),
     ];
