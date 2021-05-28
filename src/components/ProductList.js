@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProductList(props) {
   const classes = useStyles();
-  const { products } = props;
+  const { products, priceType } = props;
   const addItem = (item) => {
     props.add(item);
   };
@@ -84,7 +84,7 @@ function ProductList(props) {
               <Box className={classes.listTitle}>{item.fields.Name}</Box>
               <React.Fragment>
                 <Box className={classes.priceText}>
-                  {`Price/Kg: ${item.fields["Price / Kg"].toFixed(2)} JOD`}
+                  {`${priceType}: ${item.fields["Price"].toFixed(2)} JOD`}
                 </Box>
                 <Box component="form" className={classes.manageProduct}>
                   {dataParser.disableProduct(item).status === false && (

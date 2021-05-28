@@ -38,7 +38,7 @@ const dataSlice = createSlice({
           product: action.payload,
         });
       }
-      state.totalAmount += action.payload.fields["Price / Kg"];
+      state.totalAmount += action.payload.fields["Price"];
       state.totalItems++;
       state.showCart = true;
       saveStateToStorage(state, "cartState");
@@ -62,7 +62,7 @@ const dataSlice = createSlice({
           state.totalItems--;
         }
         if (state.totalAmount > 0) {
-          state.totalAmount -= action.payload.fields["Price / Kg"];
+          state.totalAmount -= action.payload.fields["Price"];
         }
       }
       state.showCart = true;

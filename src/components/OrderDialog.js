@@ -139,7 +139,7 @@ function OrderDialog(props) {
   const calculateTotal = (items) => {
     let total = 0;
     items.map((item) => {
-      total += item.fields.Qty * Number(item.fields["Price / Kg"]);
+      total += item.fields.Qty * Number(item.fields["Price"]);
     });
     return total;
   };
@@ -198,7 +198,7 @@ function OrderDialog(props) {
                               <React.Fragment>
                                 <div>
                                   {`Amount: ${(
-                                    item.fields["Price / Kg"] * item.fields.Qty
+                                    item.fields["Price"] * item.fields.Qty
                                   ).toFixed(2)} JOD`}
                                 </div>
                               </React.Fragment>
@@ -350,7 +350,7 @@ function OrderDialog(props) {
                                   <React.Fragment>
                                     <div>
                                       {`Amount: ${(
-                                        item.product.fields["Price / Kg"] *
+                                        item.product.fields["Price"] *
                                         item.count
                                       ).toFixed(2)} JOD`}
                                     </div>

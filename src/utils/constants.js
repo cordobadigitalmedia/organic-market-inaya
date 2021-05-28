@@ -1,0 +1,1 @@
+export const defaultPriceType = "Price/Kg";

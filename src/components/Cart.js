@@ -79,7 +79,7 @@ function Cart(props) {
               </Box>
               <Box className={classes.priceText}>
                 {`Amount: ${
-                  (item.product.fields["Price / Kg"] * item.count).toFixed(2)
+                  (item.product.fields["Price"] * item.count).toFixed(2)
                 } JOD`}
               </Box>
             </Box>

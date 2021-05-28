@@ -14,6 +14,7 @@ import productsService from "../../src/services/productsService";
 import vendorsService from "../../src/services/vendorsService";
 import ProductList from "../../src/components/ProductList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { defaultPriceType } from "../../src/utils/constants";
 
 const drawerWidth = 260;
 
@@ -63,10 +64,14 @@ export async function getStaticProps({ params }) {
 export default function Vendor({ products, vendor }) {
   const classes = useStyles();
   let categories = [];
+  let priceType = defaultPriceType;
   if (Array.isArray(vendor) && vendor.length > 0 && vendor[0].fields.useCategories) {
     categories = [
       ...new Set(products.map((product) => product.fields.Category)),
     ];
+  }
+  if (Array.isArray(vendor) && vendor.length > 0 && "Price Type" in vendor[0].fields) {
+    priceType = vendor[0].fields["Price Type"];
   }
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
@@ -108,13 +113,14 @@ export default function Vendor({ products, vendor }) {
                           products={products.filter(
                             (product) => product.fields.Category === category
                           )}
+                          priceType={priceType}
                         />
                       </AccordionDetails>
                     </Accordion>
                   ))}
                 </Box>
               ) : (
-                <ProductList products={products} />
+                <ProductList products={products} priceType={priceType} />
               )}
             </main>
           </Box>
