@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Cart(props) {
   const classes = useStyles();
+  console.log(props.cartItems);
   return (
     <List>
       {props.cartItems.items.map((item, i) => (
@@ -78,22 +79,21 @@ function Cart(props) {
                 </IconButton>
               </Box>
               <Box className={classes.priceText}>
-                {`Amount: ${
-                  (item.product.fields["Price"] * item.count).toFixed(2)
-                } JOD`}
+                {`Amount: ${(item.product.fields["Price"] * item.count).toFixed(2)
+                  } JOD`}
               </Box>
             </Box>
           </ListItem>
           <Divider />
         </Box>
       ))}
-      <ListItem className={classes.listitem}>
+      {"totalAmount" in props.cartItems && props.cartItems.totalAmount !== null && <ListItem className={classes.listitem}>
         <ListItemIcon>
           <MonetizationOn />
         </ListItemIcon>
         <ListItemText primary={`Total: ${props.cartItems.totalAmount.toFixed(2)} JOD`} />
-      </ListItem>
-      <OrderDialog linkText="Place Order"/>
+      </ListItem>}
+      <OrderDialog linkText="Place Order" />
     </List>
   );
 }

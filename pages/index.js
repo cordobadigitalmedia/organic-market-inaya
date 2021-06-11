@@ -74,7 +74,7 @@ export async function getStaticProps() {
     props: {
       vendors,
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 

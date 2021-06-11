@@ -361,7 +361,7 @@ function OrderDialog(props) {
                             <Divider />
                           </div>
                         ))}
-                        <ListItem>
+                        {"totalAmount" in props.cartItems && props.cartItems.totalAmount !== null && <ListItem>
                           <ListItemSecondaryAction>
                             <Box pt={2}>
                               <Typography variant="h6" component="h4">
@@ -371,7 +371,7 @@ function OrderDialog(props) {
                               </Typography>
                             </Box>
                           </ListItemSecondaryAction>
-                        </ListItem>
+                        </ListItem>}
                       </List>
                     </CardContent>
                   </Card>

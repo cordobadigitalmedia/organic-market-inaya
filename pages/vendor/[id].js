@@ -37,6 +37,17 @@ export async function getStaticPaths() {
     paths: [
       { params: { id: "recVvqzqsYgyEGAzM" } },
       { params: { id: "recZL5KJlGOhbnySl" } },
+      { params: { id: "rec54W9A1LxIo1Zc0" } },
+      { params: { id: "recA4zPSBpzm4OHtp" } },
+      { params: { id: "rec3Qf17sqWUVVPuD" } },
+      { params: { id: "recG9XNfqPvO9gIC6" } },
+      { params: { id: "recg4GnWcIjEAn7Jo" } },
+      { params: { id: "recimL92GztnuRtP6" } },
+      { params: { id: "recPXmfvjx5RFMIJt" } },
+      { params: { id: "recqXXmIQQndYzPyl" } },
+      { params: { id: "rechsQHrhhXIbpMBG" } },
+      { params: { id: "recJJQ4hCSGnwL9Vn" } },
+      { params: { id: "recEieYNp3mVZgs4u" } },
     ],
     fallback: true,
   };
@@ -57,7 +68,7 @@ export async function getStaticProps({ params }) {
       vendor,
       id,
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 

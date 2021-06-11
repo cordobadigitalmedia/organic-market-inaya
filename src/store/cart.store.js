@@ -38,6 +38,7 @@ const dataSlice = createSlice({
           product: action.payload,
         });
       }
+      console.log(action.payload.fields);
       state.totalAmount += action.payload.fields["Price"];
       state.totalItems++;
       state.showCart = true;
